@@ -10,9 +10,6 @@ import Header from './components/header';
 import Maps from './containers/google_maps';
 import UserList from './components/user_list';
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-
 injectTapEventPlugin();
 
 // This replaces the textColor value on the palette
@@ -27,7 +24,7 @@ const muiTheme = getMuiTheme({
   },
 });
 
-//let store = createStore()
+
 
 class Main extends Component {
   componentWillMount() {
@@ -43,7 +40,7 @@ class Main extends Component {
   render() {
     return (
       <div>
-         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <Header title="Home"/>
         </MuiThemeProvider>
         <div>
@@ -57,8 +54,4 @@ class Main extends Component {
   }
 }
 
-
-
-Meteor.startup(() => {
-  ReactDOM.render(<Main />, document.getElementById('render-target'));
-})
+export default Main;

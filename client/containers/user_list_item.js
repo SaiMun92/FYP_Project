@@ -5,11 +5,12 @@ import RunningIcon from 'material-ui/svg-icons/Maps/directions-run';
 import ShareIcon from 'material-ui/svg-icons/Social/share';
 import VideoIcon from 'material-ui/svg-icons/Notification/ondemand-video';
 import {blue500, yellow600, darkBlack} from 'material-ui/styles/colors';
-import Maps from './google_maps';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { inputMap } from '../actions/index';
 
 let trailNum = 0;
-
-
 
 class UserListitem extends Component {
   constructor(props) {
@@ -23,12 +24,8 @@ class UserListitem extends Component {
     const lat = item.mapPoints[0].location.latitude/10000000;
     const lng = item.mapPoints[0].location.longitude/10000000;
     console.log("clicked");
-    // pass these values to Google Maps
-    return (
-      <div>
-        <Maps lat={lat} lng={lng} />
-      </div>
-    );
+    // pass these values to the store
+    this.props.inputMap(lat, lng);
   }
 
 
@@ -36,7 +33,7 @@ class UserListitem extends Component {
     const item = this.props.item
     trailNum +=1;
     const date = item.dayId;  // this is a string
-    const newDate = date.slice(8,10) + "/" + date.slice(1,3);
+    const newDate = date.slice(8,10) + "/" + date.slice(5,7);
     console.log(item);  // shows what contains in the item
     return (
       <div>
@@ -55,7 +52,7 @@ class UserListitem extends Component {
           leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
           initiallyOpen={false}
           primaryTogglesNestedList={false}
-          onClick={() => this.onClickHandler()}
+          onClick={this.onClickHandler}
           nestedItems={[
             <ListItem
               key={1}
@@ -75,4 +72,8 @@ class UserListitem extends Component {
   }
 }
 
-export default UserListitem;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ inputMap: inputMap }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(UserListitem);

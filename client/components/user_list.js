@@ -9,7 +9,7 @@ import FileFolder from 'material-ui/svg-icons/file/folder';
 import ActionAssignment from 'material-ui/svg-icons/action/assignment';
 import {blue500, yellow600} from 'material-ui/styles/colors';
 import RunningIcon from 'material-ui/svg-icons/Maps/directions-run';
-import UserListitem from './user_list_item';
+import UserListitem from '../containers/user_list_item';
 import Infinite from 'react-infinite';
 import '../mshealthjs';
 
