@@ -8,25 +8,17 @@ import {blue500, yellow600, darkBlack} from 'material-ui/styles/colors';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { inputMap } from '../actions/index';
+import { inputMap, inputPolyline } from '../actions/index';
 
 let trailNum = 0;
+
 
 class UserListitem extends Component {
   constructor(props) {
     super(props);
-    this.onClickHandler = this.onClickHandler.bind(this);
+    // this.onClickHandler = this.onClickHandler.bind(this);
   }
 
-  onClickHandler() {
-    // over here pass in the props to the Google Maps to re-render to the screen
-    const item = this.props.item;
-    const lat = item.mapPoints[0].location.latitude/10000000;
-    const lng = item.mapPoints[0].location.longitude/10000000;
-    console.log("clicked");
-    // pass these values to the store
-    this.props.inputMap(lat, lng);
-  }
 
 
   render() {
@@ -52,7 +44,7 @@ class UserListitem extends Component {
           leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
           initiallyOpen={false}
           primaryTogglesNestedList={false}
-          onClick={this.onClickHandler}
+          onClick={() => this.props.inputPolyline(item.mapPoints)}
           nestedItems={[
             <ListItem
               key={1}
@@ -73,7 +65,7 @@ class UserListitem extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ inputMap: inputMap }, dispatch)
+  return bindActionCreators({ inputMap, inputPolyline}, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(UserListitem);

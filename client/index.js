@@ -2,11 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from './main';
 // Redux
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
+import thunk from 'redux-thunk';
 
-let store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+);
+//const createStoreWithMiddleware = applyMiddleware()(createStore);
 
 // Entry point
 Meteor.startup(() => {
