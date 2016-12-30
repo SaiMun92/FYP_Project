@@ -15,3 +15,11 @@ body, html {
   float: right;
   width: 25%;
 }
+
+.shareContainer {
+  width: 100%;
+}
+
+.share-button {
+  display: inline-block;
+}

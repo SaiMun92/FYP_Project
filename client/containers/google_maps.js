@@ -18,7 +18,7 @@ class Maps extends Component {
   }
 
   componentDidUpdate() {
-    const runningPath = this.props.polyline.map((data) => {
+    const runningPath = this.props.data.map((data) => {
       if (typeof data.location !== 'undefined') {
         const lat = data.location.latitude/10000000;
         const lng = data.location.longitude/10000000;
@@ -42,13 +42,7 @@ class Maps extends Component {
       position: home,
       map: map
     });
-    var flightPlanCoordinates = [
-      {lat: 1.4127377, lng: 103.8380522},
-      {lat: 1.4129213, lng: 103.8382748},
-      {lat: 1.4130677, lng: 103.8384582},
-      {lat: 1.4132780, lng: 103.8388465},
-      {lat: 1.4135151, lng: 103.8388620}
-    ];
+
 
     var flightPath = new google.maps.Polyline({
       path: running_cord,
@@ -72,8 +66,8 @@ class Maps extends Component {
 
 function mapStateToProps(state) {
   return {
-    current_Map: state.current_Map,
-    polyline: state.polyline
+    // current_Map: state.current_Map,
+    data: state.data
   };
 }
 
