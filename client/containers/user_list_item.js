@@ -13,6 +13,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { inputData } from '../actions/index';
 
+import {browserHistory} from 'react-router';
+
 let trailNum = 0;
 const customContentStyle = {
   width: '100%',
@@ -22,7 +24,6 @@ const {
   FacebookShareButton,
   GooglePlusShareButton,
   TwitterShareButton,
-
 } = ShareButtons;
 
 const FacebookIcon = generateShareIcon('facebook');
@@ -39,7 +40,7 @@ class UserListitem extends Component {
 
   shareVideo() {
     console.log("sharing video");
-  }
+  };
 
   handleOpen = () => {
     // Close button
@@ -49,6 +50,10 @@ class UserListitem extends Component {
   handleClose = () => {
     // Submit button
     this.setState({open: false});
+  };
+
+  linkToVideo = () => {
+    browserHistory.push('/video');
   };
 
   render() {
@@ -72,6 +77,7 @@ class UserListitem extends Component {
     const shareUrl = 'http://github.com';
     const title = 'Check out where i run today!';
 
+    // Over here needs to include in a key that is making a warning in the console.
     return (
       <div>
         <ListItem
@@ -95,6 +101,7 @@ class UserListitem extends Component {
               key={1}
               primaryText="Video"
               leftIcon={<VideoIcon />}
+              onTouchTap={this.linkToVideo.bind(this)}
             />,
             <ListItem
               key={2}

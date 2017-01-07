@@ -23,3 +23,7 @@ body, html {
 .share-button {
   display: inline-block;
 }
+
+.videoLink {
+  right: 300px;
+}

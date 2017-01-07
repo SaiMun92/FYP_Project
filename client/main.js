@@ -24,7 +24,7 @@ const muiTheme = getMuiTheme({
   },
 });
 
-
+// This class is a temporary measure to login and authenticate to the MicrosoftHealth API.
 
 class Main extends Component {
   componentWillMount() {

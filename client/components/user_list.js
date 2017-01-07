@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MobileTearSheet from '../MobileTearSheet';
+import MobileTearSheet from './MobileTearSheet';
 import {List, ListItem} from 'material-ui/List';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import Divider from 'material-ui/Divider';
@@ -11,7 +11,7 @@ import {blue500, yellow600} from 'material-ui/styles/colors';
 import RunningIcon from 'material-ui/svg-icons/Maps/directions-run';
 import UserListitem from '../containers/user_list_item';
 import Infinite from 'react-infinite';
-import '../mshealthjs';
+
 
 const mshealth = new MicrosoftHealth({
         clientId: "70948966-da9f-49bd-9124-fe2ba4c4ce1e",
@@ -22,7 +22,7 @@ const mshealth = new MicrosoftHealth({
 const sevenDaysAgo = new Date();
 sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
 
-
+// This file calls the mshealth api and get the data from its server and pass them as props to user_list_item.
 class UserList extends Component {
   constructor(props) {
     super(props);
