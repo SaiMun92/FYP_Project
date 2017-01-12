@@ -11,6 +11,28 @@ body, html {
   float: left;
 }
 
+#video_map {
+  width: 300px;
+  height: 300px;
+  border-radius: 75px;
+  position: absolute;
+  left: 3%;
+  top: 3%;
+  z-index: 3;
+  box-shadow:0 10px 30px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
+}
+
+#pano {
+  position:absolute;
+  right:0;
+  z-index: -1;
+}
+
+#pano:hover{
+  cursor: pointer;
+}
+
+
 .userlist {
   float: right;
   width: 25%;

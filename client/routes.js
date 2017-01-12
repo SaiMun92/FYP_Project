@@ -8,6 +8,6 @@ import Video from './containers/hyperlapse_video';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Main} />
-    <Route path="video" component={Video} />
+    <Route path="video/:id" component={Video} />
   </Route>
 );

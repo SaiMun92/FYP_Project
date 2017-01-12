@@ -1,14 +1,9 @@
-export default function(state = null, action) {
+import { INPUT_MAP } from '../actions/index';
+
+export default function(state = {}, action) {
   switch(action.type) {
-    case 'INPUT_MAP':
-      return {
-        lat: action.lat,
-        lng: action.lng
-      }
-    default:
-      return {
-        lat: 1.359803,
-        lng: 103.837521
-      }
-  }
+    case INPUT_MAP:
+      return action.map
+    }
+    return state;
 }

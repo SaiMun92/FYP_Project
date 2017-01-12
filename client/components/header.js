@@ -19,8 +19,9 @@ class Login extends Component {
   }
   static muiName = 'FlatButton';
 
+  // mshealth is not defined yet
   handleLogin() {
-    mshealth.login();
+    //mshealth.login();
   }
 
   render() {

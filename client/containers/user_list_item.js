@@ -15,7 +15,7 @@ import { inputData } from '../actions/index';
 
 import {browserHistory} from 'react-router';
 
-let trailNum = 0;
+
 const customContentStyle = {
   width: '100%',
   maxWidth: 'none',
@@ -53,13 +53,13 @@ class UserListitem extends Component {
   };
 
   linkToVideo = () => {
-    browserHistory.push('/video');
+    this.props.inputData(this.props.item.mapPoints);
+    browserHistory.push("video/" + this.props.item.id);
   };
 
   render() {
     // this was passed from user_list.js
-    const item = this.props.item
-    trailNum +=1;
+    const item = this.props.item;
     const date = item.dayId;  // this is a string
     const newDate = date.slice(8,10) + "/" + date.slice(5,7);
     console.log(item);  // shows what contains in the item
