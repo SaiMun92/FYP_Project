@@ -22,6 +22,18 @@ body, html {
   box-shadow:0 10px 30px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
 }
 
+#controller {
+  width: 500px;
+  height: 60px;
+  top: 80%;
+  left: 30%;
+  border-radius: 25px;
+  position: absolute;
+  background-color: white;
+  z-index: 2;
+  box-shadow:0 10px 30px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
+}
+
 #pano {
   position:absolute;
   right:0;
@@ -48,4 +60,16 @@ body, html {
 
 .videoLink {
   right: 300px;
+}
+
+.percentage {
+  text-align: center;
+}
+
+.loader {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+  text-align: center;
 }

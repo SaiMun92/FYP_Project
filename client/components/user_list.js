@@ -20,7 +20,7 @@ const mshealth = new MicrosoftHealth({
 });
 
 const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30);
+sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30 );
 
 // This file calls the mshealth api and get the data from its server and pass them as props to user_list_item.
 class UserList extends Component {

@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import {browserHistory} from 'react-router';
 
 //var url = "https://login.live.com/oauth20_authorize.srf?client_id={70948966-da9f-49bd-9124-fe2ba4c4ce1e}&scope={mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation}&response_type=code&redirect_uri={https://login.live.com/oauth20_desktop.srf}";
 
@@ -64,6 +65,10 @@ class Header extends Component {
     this.setState({logged: logged});
   };
 
+  handleTouch = () => {
+    browserHistory.push("test");
+  };
+
   render() {
     return (
       <div>
@@ -77,6 +82,7 @@ class Header extends Component {
         <AppBar
           title={this.props.title}
           iconElementRight={thisToggle ? <Logged /> : <Login />}
+          onClick={this.handleTouch.bind(this)}
         />
       </div>
     );

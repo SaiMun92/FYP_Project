@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import VideoController from '../components/videoController';
+
 // 2. Do the loading bar
 // 3. Do the pause play button thing
 // 4. Link back to the main page button.
@@ -14,6 +16,11 @@ let latLngPoints = [];
 class Video extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      Progress: '',
+      Length: '',
+      Value: '',
+    };
   }
 
   componentDidMount() {
@@ -43,7 +50,7 @@ class Video extends Component {
 
     /* Map */
     let map = new google.maps.Map(document.getElementById('video_map'), {
-      zoom: 14,
+      zoom: 13,
       center: centrePoint,
       // coordinates of Singapore
     });
@@ -81,7 +88,7 @@ class Video extends Component {
 
     /* Hyperlapse */
     var hyperlapse = new Hyperlapse(document.getElementById('pano'), {
-  		zoom: 1,
+  		zoom: 2,
   		use_lookat: false,
   		elevation: 50,
       fov: 80,
@@ -96,6 +103,10 @@ class Video extends Component {
   		console.log(e);
   	};
 
+    hyperlapse.onFrame = function(e) {
+      cameraPinMarker.setPosition(e.point.location);
+    }
+
     hyperlapse.onRouteProgress = function(e) {
       let dotMarker = new google.maps.Marker({
         position: e.point.location,
@@ -109,8 +120,19 @@ class Video extends Component {
   		hyperlapse.load();
   	};
 
+    hyperlapse.onLoadProgress = (e) => {
+      // show the text and the loading screen
+      const Message= "Progress: " + (e.position+1) + " of " + hyperlapse.length();
+      this.setState({ Progress: "Generating Timelapse Video..."});
+      this.setState({ Length: hyperlapse.length() });
+      this.setState({ Value: (e.position+1)});
+
+    };
+
   	// once the loading of points have been completed, play the video
   	hyperlapse.onLoadComplete = function(e) {
+      // hide the loading object
+      // show the controls of the video.
   		hyperlapse.play();
   	};
 
@@ -147,11 +169,20 @@ class Video extends Component {
     hyperlapse.generate(route);
   }
 
+
+  componentWillUnmount() {
+    // stop the hyperlapse video here
+  }
+
+
   render() {
     return (
       <div>
 	      <div id="video_map" className="map-container"></div>
         <div id="pano" className="video-container"></div>
+        <div id="controller">
+          <VideoController Progress={this.state.Progress} Length={this.state.Length} Value={this.state.Value} />
+        </div>
       </div>
 
     );
