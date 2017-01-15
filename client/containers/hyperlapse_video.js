@@ -20,6 +20,7 @@ class Video extends Component {
       Progress: '',
       Length: '',
       Value: '',
+      LoadingBool: true,
     };
   }
 
@@ -87,7 +88,7 @@ class Video extends Component {
     });
 
     /* Hyperlapse */
-    var hyperlapse = new Hyperlapse(document.getElementById('pano'), {
+    hyperlapse = new Hyperlapse(document.getElementById('pano'), {
   		zoom: 2,
   		use_lookat: false,
   		elevation: 50,
@@ -107,13 +108,16 @@ class Video extends Component {
       cameraPinMarker.setPosition(e.point.location);
     }
 
-    hyperlapse.onRouteProgress = function(e) {
+    hyperlapse.onRouteProgress = (e) => {
       let dotMarker = new google.maps.Marker({
         position: e.point.location,
         draggable: false,
         icon:'/images/dot_marker.png'
       });
       dotMarker.setMap(map);
+      this.setState({ Length: '' });
+      this.setState({ Value: '' });
+      this.setState({ Progress: "Generating Route..."});
     };
   	// This allows loading of panorama
   	hyperlapse.onRouteComplete = function(e) {
@@ -130,9 +134,10 @@ class Video extends Component {
     };
 
   	// once the loading of points have been completed, play the video
-  	hyperlapse.onLoadComplete = function(e) {
+  	hyperlapse.onLoadComplete = (e) => {
       // hide the loading object
       // show the controls of the video.
+      this.setState({ LoadingBool: false });
   		hyperlapse.play();
   	};
 
@@ -181,7 +186,8 @@ class Video extends Component {
 	      <div id="video_map" className="map-container"></div>
         <div id="pano" className="video-container"></div>
         <div id="controller">
-          <VideoController Progress={this.state.Progress} Length={this.state.Length} Value={this.state.Value} />
+          <VideoController Progress={this.state.Progress} Length={this.state.Length}
+            Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
         </div>
       </div>
 

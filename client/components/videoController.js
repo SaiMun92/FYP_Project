@@ -19,32 +19,95 @@ const style = {
 
 // the children of paper must be a react node. e.g. <App />
 class VideoController extends Component {
-  render() {
-
-    if (this.props.Length == null || this.props.Value == null) {
-      return (
-        <div className="loader">
-          <MuiThemeProvider>
-            <LinearProgress mode="indeterminate" />
-          </MuiThemeProvider>
-        </div>
-      );
-    }
-    else {
-      let percentage = Math.round((this.props.Value / this.props.Length) * 100);
-      return (
-        <div className="loader">
-          <div className="percentage">
+  constructor(props) {
+    super(props);
+    this.state = {
+      playBool: true,
+    };
+    this.loadingScreen = this.loadingScreen.bind(this);
+  }
+  loadingScreen() {
+    // console.log(typeof this.props.Length);
+    if (this.props.LoadingBool == true) {
+      if (typeof this.props.Length == 'string' || typeof this.props.Value == 'string') {
+        return (
+          <div className="loader">
             <p>
-              {percentage}%
+              Generating Route...
             </p>
             <MuiThemeProvider>
-              <LinearProgress  mode="determinate" min={0} max={this.props.Length} value={this.props.Value}/>
+              <LinearProgress mode="indeterminate" />
             </MuiThemeProvider>
           </div>
-        </div>
-      );
+        );
+      }
+      else {
+        let percentage = Math.round((this.props.Value / this.props.Length) * 100);
+        return (
+          <div className="loader">
+            <div className="percentage">
+              <p>
+                {percentage}%
+              </p>
+              <MuiThemeProvider>
+                <LinearProgress  mode="determinate" value={percentage}/>
+              </MuiThemeProvider>
+            </div>
+          </div>
+        );
+      }
     }
+
+    else if (this.props.LoadingBool == false) {
+
+      // load the pause play buttons here.
+      if (this.state.playBool == true) {
+        return (
+          <div className="controlsContainer">
+            <div>
+              <img src={'images/fast-rewind'} />
+            </div>
+            <div>
+              <img src={'/images/play.png'} onClick={this.pauseButton.bind(this)}/>
+            </div>
+            <div>
+              <img src={'images/fast-forward.png'} />
+            </div>
+          </div>
+        );
+      }
+      else {
+        return (
+          <div className="controlsContainer">
+            <div>
+              <img src={'images/fast-rewind'} />
+            </div>
+            <div>
+              <img src={'/images/pause.png'} onClick={this.resumeButton.bind(this)}/>
+            </div>
+            <div>
+              <img src={'images/fast-forward.png'} />
+            </div>
+          </div>
+        );
+      }
+    }
+  }
+
+  pauseButton() {
+    hyperlapse.pause();
+    this.setState({ playBool: false });
+  }
+
+  resumeButton() {
+    hyperlapse.play();
+    this.setState({ playBool: true });
+  }
+
+  render() {
+    return (
+      <div>{this.loadingScreen()}</div>
+    );
   }
 }
 

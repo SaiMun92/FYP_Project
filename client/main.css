@@ -73,3 +73,7 @@ body, html {
   padding-bottom: 1em;
   text-align: center;
 }
+
+.controlsContainer {
+  display: inline-block;
+}
