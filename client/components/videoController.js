@@ -64,14 +64,12 @@ class VideoController extends Component {
       if (this.state.playBool == true) {
         return (
           <div className="controlsContainer">
-            <div>
-              <img src={'images/fast-rewind'} />
-            </div>
-            <div>
+            <div className="image">
+              <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
+              <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
               <img src={'/images/play.png'} onClick={this.pauseButton.bind(this)}/>
-            </div>
-            <div>
-              <img src={'images/fast-forward.png'} />
+              <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
+              <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
             </div>
           </div>
         );
@@ -79,14 +77,12 @@ class VideoController extends Component {
       else {
         return (
           <div className="controlsContainer">
-            <div>
-              <img src={'images/fast-rewind'} />
-            </div>
-            <div>
+            <div className="image">
+              <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
+              <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
               <img src={'/images/pause.png'} onClick={this.resumeButton.bind(this)}/>
-            </div>
-            <div>
-              <img src={'images/fast-forward.png'} />
+              <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
+              <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
             </div>
           </div>
         );
@@ -102,6 +98,14 @@ class VideoController extends Component {
   resumeButton() {
     hyperlapse.play();
     this.setState({ playBool: true });
+  }
+
+  increaseSpeed() {
+    hyperlapse.millis -=20;
+  }
+
+  decreaseSpeed() {
+    hyperlapse.millis +=20;
   }
 
   render() {

@@ -31,6 +31,11 @@ class Video extends Component {
 		let startPoint_lng = data[0].location.longitude/10000000;
 		let endPoint_lat = data[data.length-1].location.latitude/10000000;
 		let endPoint_lng = data[data.length-1].location.longitude/10000000;
+    /* panorama */
+    let pano = document.getElementById('pano');
+    let is_moving = false;
+    let px, py;
+    let onPointerDownPointerX=0, onPointerDownPointerY=0;
 
     /* For new Hyperlapse.js */
     const runningPath = this.props.data.map((data) => {
@@ -99,6 +104,39 @@ class Video extends Component {
       distance_between_points: 5,
       max_points: 100,
     });
+
+    pano.addEventListener( 'mousedown', function(e){
+      e.preventDefault();
+
+      is_moving = true;
+
+      onPointerDownPointerX = e.clientX;
+      onPointerDownPointerY = e.clientY;
+
+      px = hyperlapse.position.x;
+      py = hyperlapse.position.y;
+
+    }, false );
+
+    pano.addEventListener( 'mousemove', function(e){
+      e.preventDefault();
+      var f = hyperlapse.fov() / 500;
+
+      if ( is_moving ) {
+        var dx = ( onPointerDownPointerX - e.clientX ) * f;
+        var dy = ( e.clientY - onPointerDownPointerY ) * f;
+        hyperlapse.position.x = px + dx; // reversed dragging direction (thanks @mrdoob!)
+        hyperlapse.position.y = py + dy;
+      }
+
+    }, false );
+
+    pano.addEventListener( 'mouseup', function(){
+      is_moving = false;
+
+      hyperlapse.position.x = px;
+      hyperlapse.position.y = py;
+    }, false );
 
   	hyperlapse.onError = function(e) {
   		console.log(e);
