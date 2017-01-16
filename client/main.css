@@ -37,13 +37,8 @@ body, html {
 #pano {
   position:absolute;
   right:0;
-  z-index: -1;
+  z-index: 0;
 }
-
-#pano:hover{
-  cursor: pointer;
-}
-
 
 .userlist {
   float: right;

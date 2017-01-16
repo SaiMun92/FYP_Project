@@ -67,7 +67,7 @@ class VideoController extends Component {
             <div className="image">
               <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
               <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
-              <img src={'/images/play.png'} onClick={this.pauseButton.bind(this)}/>
+              <img src={'/images/pause.png'} onClick={this.pauseButton.bind(this)}/>
               <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
               <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
             </div>
@@ -80,7 +80,7 @@ class VideoController extends Component {
             <div className="image">
               <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
               <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
-              <img src={'/images/pause.png'} onClick={this.resumeButton.bind(this)}/>
+              <img src={'/images/play.png'} onClick={this.resumeButton.bind(this)}/>
               <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
               <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
             </div>

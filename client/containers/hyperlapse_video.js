@@ -6,13 +6,15 @@ import { bindActionCreators } from 'redux';
 
 import VideoController from '../components/videoController';
 
-// 2. Do the loading bar
-// 3. Do the pause play button thing
-// 4. Link back to the main page button.
-// 5. change the routes source.
+// 1. Create another app that shares the video_map
+// 2. Create a resume and share it
 
 let elevation = 0;
 let latLngPoints = [];
+let pano = document.getElementById('pano');
+let px, py;
+let onPointerDownPointerX=0, onPointerDownPointerY=0;
+
 class Video extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,47 @@ class Video extends Component {
       Length: '',
       Value: '',
       LoadingBool: true,
+      isMoving: false,
+      px: "",
+      py: "",
+      onPointerDownPointerX: 0,
+      onPointerDownPointerY: 0,
     };
+  }
+
+
+  handleMouseDown(e) {
+    e.preventDefault();
+
+    console.log("handleMouseDown");
+    this.setState({
+      isMoving: true,
+      onPointerDownPointerX: e.clientX,
+      onPointerDownPointerY: e.clientY,
+      px: hyperlapse.position.x,
+      py: hyperlapse.position.y
+    });
+  }
+
+  handleMouseMove(e) {
+    e.preventDefault();
+
+    let f = hyperlapse.fov() / 500;
+    if (this.state.isMoving) {
+      let dx = ( this.state.onPointerDownPointerX - e.clientX ) * f;
+      let dy = ( e.clientY - this.state.onPointerDownPointerY ) * f;
+      hyperlapse.position.x = this.state.px + dx; // reversed dragging direction (thanks @mrdoob!)
+      hyperlapse.position.y = this.state.py + dy;
+    }
+  }
+
+  handleMouseUp(e) {
+    hyperlapse.position.x = this.state.px;
+    hyperlapse.position.y = this.state.py;
+
+    this.setState({
+      isMoving: false,
+    });
   }
 
   componentDidMount() {
@@ -32,10 +74,7 @@ class Video extends Component {
 		let endPoint_lat = data[data.length-1].location.latitude/10000000;
 		let endPoint_lng = data[data.length-1].location.longitude/10000000;
     /* panorama */
-    let pano = document.getElementById('pano');
-    let is_moving = false;
-    let px, py;
-    let onPointerDownPointerX=0, onPointerDownPointerY=0;
+
 
     /* For new Hyperlapse.js */
     const runningPath = this.props.data.map((data) => {
@@ -105,46 +144,13 @@ class Video extends Component {
       max_points: 100,
     });
 
-    pano.addEventListener( 'mousedown', function(e){
-      e.preventDefault();
-
-      is_moving = true;
-
-      onPointerDownPointerX = e.clientX;
-      onPointerDownPointerY = e.clientY;
-
-      px = hyperlapse.position.x;
-      py = hyperlapse.position.y;
-
-    }, false );
-
-    pano.addEventListener( 'mousemove', function(e){
-      e.preventDefault();
-      var f = hyperlapse.fov() / 500;
-
-      if ( is_moving ) {
-        var dx = ( onPointerDownPointerX - e.clientX ) * f;
-        var dy = ( e.clientY - onPointerDownPointerY ) * f;
-        hyperlapse.position.x = px + dx; // reversed dragging direction (thanks @mrdoob!)
-        hyperlapse.position.y = py + dy;
-      }
-
-    }, false );
-
-    pano.addEventListener( 'mouseup', function(){
-      is_moving = false;
-
-      hyperlapse.position.x = px;
-      hyperlapse.position.y = py;
-    }, false );
-
   	hyperlapse.onError = function(e) {
   		console.log(e);
   	};
 
     hyperlapse.onFrame = function(e) {
       cameraPinMarker.setPosition(e.point.location);
-    }
+    };
 
     hyperlapse.onRouteProgress = (e) => {
       let dotMarker = new google.maps.Marker({
@@ -212,17 +218,16 @@ class Video extends Component {
     hyperlapse.generate(route);
   }
 
-
-  componentWillUnmount() {
-    // stop the hyperlapse video here
-  }
+  // onClickButton() {
+  //   console.log("clicked me!");
+  // }
 
 
   render() {
     return (
       <div>
 	      <div id="video_map" className="map-container"></div>
-        <div id="pano" className="video-container"></div>
+        <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
         <div id="controller">
           <VideoController Progress={this.state.Progress} Length={this.state.Length}
             Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
