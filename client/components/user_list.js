@@ -56,6 +56,7 @@ class UserList extends Component {
   }
 
   render() {
+    // this contains the whole data.
     const activity = this.state._runActivity;
 
     const ListViewItem = activity.map((item) => {

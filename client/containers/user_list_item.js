@@ -9,10 +9,12 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
 
+/* Redux */
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { inputData } from '../actions/index';
 
+/* React Router */
 import {browserHistory} from 'react-router';
 
 
@@ -53,6 +55,7 @@ class UserListitem extends Component {
   };
 
   linkToVideo = () => {
+    // insert into Db here
     this.props.inputData(this.props.item.mapPoints);
     browserHistory.push("video/" + this.props.item.id);
   };
@@ -94,8 +97,8 @@ class UserListitem extends Component {
           secondaryTextLines={2}
           leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
           initiallyOpen={false}
-          primaryTogglesNestedList={false}
-          onClick={() => this.props.inputData(item.mapPoints)}
+          primaryTogglesNestedList={true}
+          onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
           nestedItems={[
             <ListItem
               key={1}
