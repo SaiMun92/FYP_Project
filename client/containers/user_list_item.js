@@ -60,6 +60,12 @@ class UserListitem extends Component {
     browserHistory.push("video/" + this.props.item.id);
   };
 
+
+  handleClick = () => {
+    this.props.inputData(this.props.item.mapPoints);
+    Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints);
+  };
+
   render() {
     // this was passed from user_list.js
     const item = this.props.item;
@@ -77,7 +83,8 @@ class UserListitem extends Component {
     ];
 
     // link title and url
-    const shareUrl = 'http://github.com';
+    const shareUrl = `http://localhost:8080/video/${this.props.item.id}`;
+    console.log(shareUrl);
     const title = 'Check out where i run today!';
 
     // Over here needs to include in a key that is making a warning in the console.
@@ -97,8 +104,9 @@ class UserListitem extends Component {
           secondaryTextLines={2}
           leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
           initiallyOpen={false}
-          primaryTogglesNestedList={true}
-          onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
+          primaryTogglesNestedList={false}
+          onClick={this.handleClick.bind(this)}
+          // onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
           nestedItems={[
             <ListItem
               key={1}
