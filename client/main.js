@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -27,14 +29,48 @@ const muiTheme = getMuiTheme({
 // This class is a temporary measure to login and authenticate to the MicrosoftHealth API.
 
 class Main extends Component {
-  componentWillMount() {
-    const mshealth = new MicrosoftHealth({
-            clientId: "70948966-da9f-49bd-9124-fe2ba4c4ce1e",
-            redirectUri: "http://localhost:3000",
-            scope: "mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation"
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      access_token: '',
+      user_activities: [],
+      name: '',
+    };
+  }
+  // componentWillMount() {
+  //   // const mshealth = new MicrosoftHealth({
+  //   //         clientId: "70948966-da9f-49bd-9124-fe2ba4c4ce1e",
+  //   //         redirectUri: "http://localhost:3000",
+  //   //         scope: "mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation"
+  //   // });
+  //   // mshealth.login();
+  // }
 
-    mshealth.login();
+    /* excellent place to call the api */
+  componentWillMount() {
+    // this {code} must be called at the same
+    const code = this.props.location.query.code;
+    Meteor.call('getAccessToken', code, (err, res) => {
+      if (err) {
+        console.log(err);
+      }
+      if (!err) {
+        console.log(res);
+        this.setState({ access_token: res.access_token });
+        this.setState({ name: res.athlete.lastname });
+
+        let url = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=10`;
+        // console.log(url);
+        axios.get(url)
+          .then(response => {
+            console.log(response.data);
+            this.setState({ user_activities: response.data });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    });
   }
 
   render() {
@@ -47,7 +83,7 @@ class Main extends Component {
           <Maps />
         </div>
         <MuiThemeProvider>
-          <UserList />
+          <UserList access_token={this.state.access_token} user_activities={this.state.user_activities} name={this.state.name}/>
         </MuiThemeProvider>
       </div>
     );

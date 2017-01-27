@@ -6,10 +6,6 @@ import { bindActionCreators } from 'redux';
 
 import VideoController from '../components/videoController';
 
-// 2. Do the loading bar
-// 3. Do the pause play button thing
-// 4. Link back to the main page button.
-// 5. change the routes source.
 
 let elevation = 0;
 let latLngPoints = [];

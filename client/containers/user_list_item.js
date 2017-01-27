@@ -8,6 +8,7 @@ import {blue500, yellow600, darkBlack} from 'material-ui/styles/colors';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
+import polyline from 'polyline';
 
 /* Redux */
 import { bindActionCreators } from 'redux';
@@ -56,22 +57,35 @@ class UserListitem extends Component {
 
   linkToVideo = () => {
     // insert into Db here
-    this.props.inputData(this.props.item.mapPoints);
+    // this.props.inputData(this.props.item.mapPoints);
     browserHistory.push("video/" + this.props.item.id);
   };
 
 
   handleClick = () => {
-    this.props.inputData(this.props.item.mapPoints);
-    Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints);
+    Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        let decodedPolyline = polyline.decode(res.map.polyline);
+        let id = this.props.item.id.toString();
+        this.props.inputData(decodedPolyline);
+        Meteor.call('gps.insert', id, decodedPolyline);
+      }
+    });
+
+
+    // console.log(decodedPolyline);
+
   };
 
   render() {
     // this was passed from user_list.js
     const item = this.props.item;
-    const date = item.dayId;  // this is a string
+    // console.log(item);
+    const date = item.start_date;  // this is a string
     const newDate = date.slice(8,10) + "/" + date.slice(5,7);
-    console.log(item);  // shows what contains in the item
+    // console.log(newDate);  // shows what contains in the item
 
     const actions = [
       <FlatButton
@@ -83,8 +97,7 @@ class UserListitem extends Component {
     ];
 
     // link title and url
-    const shareUrl = `http://localhost:8080/video/${this.props.item.id}`;
-    console.log(shareUrl);
+    const shareUrl = `http://127.0.0.1:8080/video/${this.props.item.id}`;
     const title = 'Check out where i run today!';
 
     // Over here needs to include in a key that is making a warning in the console.
@@ -96,12 +109,12 @@ class UserListitem extends Component {
           secondaryText={
             <p>
               <span style={{color: darkBlack}}>Total Distance</span> --
-              {item.distanceSummary.totalDistance/100000 + " km"}<br />
-              <span style={{color: darkBlack}}>Total Calories</span> --
-              {item.caloriesBurnedSummary.totalCalories}
+              {item.distance/1000 + " km"}<br />
+              {/* <span style={{color: darkBlack}}>Total Calories</span> --
+              {item.caloriesBurnedSummary.totalCalories} */}
             </p>
           }
-          secondaryTextLines={2}
+          secondaryTextLines={1}
           leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
           initiallyOpen={false}
           primaryTogglesNestedList={false}
@@ -166,3 +179,19 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(null, mapDispatchToProps)(UserListitem);
+
+
+
+
+// import React, { Component} from 'react';
+//
+// class UserListitem extends Component {
+//   render() {
+//     console.log(this.props.item);
+//     return (
+//       <div></div>
+//     );
+//   }
+// }
+//
+// export default UserListitem;

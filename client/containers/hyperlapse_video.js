@@ -68,27 +68,27 @@ class Video extends Component {
 
   componentDidMount() {
 
-    let { data } = this.props;
-		let startPoint_lat = data[0].location.latitude/10000000;
-		let startPoint_lng = data[0].location.longitude/10000000;
-		let endPoint_lat = data[data.length-1].location.latitude/10000000;
-		let endPoint_lng = data[data.length-1].location.longitude/10000000;
+    // let { data } = this.props;
+		// let startPoint_lat = data[0].location.latitude/10000000;
+		// let startPoint_lng = data[0].location.longitude/10000000;
+		// let endPoint_lat = data[data.length-1].location.latitude/10000000;
+		// let endPoint_lng = data[data.length-1].location.longitude/10000000;
     /* panorama */
 
 
     /* For new Hyperlapse.js */
     const runningPath = this.props.data.map((data) => {
-      if (typeof data.location !== 'undefined') {
-        const lat = data.location.latitude/10000000;
-        const lng = data.location.longitude/10000000;
-        // should not use this.setState as this will cause a re-render and the componentDidUpdate will be
-        // called again. => this is what caused the infinite loop.
-        latLngPoints.push(new google.maps.LatLng(data.location.latitude/10000000, data.location.longitude/10000000));
+      if (typeof data !== 'undefined') {
+        // const lat = data.location.latitude/10000000;
+        // const lng = data.location.longitude/10000000;
+
+        // running_cord.push({lat: data[0], lng: data[1] });
+        latLngPoints.push(new google.maps.LatLng(data[0], data[1]));
       }
     });
 
-    let startPoint = new google.maps.LatLng(startPoint_lat, startPoint_lng);
-    let endPoint = new google.maps.LatLng(endPoint_lat, endPoint_lng);
+    let startPoint = latLngPoints[0];
+    let endPoint = latLngPoints[latLngPoints.length-1];
 
     // calculating the midpoint of the start and end coordinates
     let centrePoint = google.maps.geometry.spherical.interpolate(endPoint, startPoint, 0.5);
@@ -201,8 +201,8 @@ class Video extends Component {
     		// destination: new google.maps.LatLng(1.419025,103.845469),
 
         // original route
-        origin: new google.maps.LatLng(startPoint_lat, startPoint_lng),
-        destination: new google.maps.LatLng(endPoint_lat,endPoint_lng),
+        origin: startPoint,
+        destination: endPoint,
         latLngPoints : latLngPoints,
   			travelMode: google.maps.DirectionsTravelMode.WALKING
   		}

@@ -9,6 +9,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import {browserHistory} from 'react-router';
 
+import axios from 'axios';
+
 //var url = "https://login.live.com/oauth20_authorize.srf?client_id={70948966-da9f-49bd-9124-fe2ba4c4ce1e}&scope={mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation}&response_type=code&redirect_uri={https://login.live.com/oauth20_desktop.srf}";
 
 let thisToggle = false;
@@ -27,7 +29,7 @@ class Login extends Component {
 
   render() {
     return (
-      <FlatButton {...this.props} label="Login" onClick={this.handleLogin} />
+      <FlatButton {...this.props} label="Logout" onClick={this.handleLogin} />
     );
   }
 }

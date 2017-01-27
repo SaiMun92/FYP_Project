@@ -20,15 +20,15 @@ class Maps extends Component {
   componentDidUpdate() {
     // this.props.data is from the redux store which contains the gps coordinates.
     const runningPath = this.props.data.map((data) => {
-      if (typeof data.location !== 'undefined') {
-        const lat = data.location.latitude/10000000;
-        const lng = data.location.longitude/10000000;
-        // should not use this.setState as this will cause a re-render and the componentDidUpdate will be
-        // called again. => this is what caused the infinite loop.
-        running_cord.push({lat: lat, lng: lng });
+
+      if (typeof data !== 'undefined') {
+        // const lat = data.location.latitude/10000000;
+        // const lng = data.location.longitude/10000000;
+        // running_cord.push({lat: lat, lng: lng });
+        running_cord.push({lat: data[0], lng: data[1] });
       }
     });
-    
+
     // i need to change this to the first available coordinates
     let start_lat = running_cord[0].lat;
     let start_lng = running_cord[0].lng;
@@ -79,7 +79,7 @@ class Maps extends Component {
 
   render() {
     //console.log(this.props.polyline); // this is what gives the Array[0] in the beginning.
-    console.log(running_cord);
+    // console.log(running_cord);
     return (
       <div id="map" className="map-container"></div>
     );
