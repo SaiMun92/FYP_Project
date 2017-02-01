@@ -8,28 +8,31 @@ import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import {browserHistory} from 'react-router';
-
+import { Session } from 'meteor/session';
 import axios from 'axios';
 
 //var url = "https://login.live.com/oauth20_authorize.srf?client_id={70948966-da9f-49bd-9124-fe2ba4c4ce1e}&scope={mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation}&response_type=code&redirect_uri={https://login.live.com/oauth20_desktop.srf}";
 
 let thisToggle = false;
 
-class Login extends Component {
+class Logout extends Component {
   constructor(props) {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
   static muiName = 'FlatButton';
 
-  // mshealth is not defined yet
-  handleLogin() {
-    //mshealth.login();
+
+  handleLogout() {
+    console.log("logout");
+    window.location.href = "https://www.strava.com/logout";
+    // clear meteor sessions here.
+    Session.keys = {};
   }
 
   render() {
     return (
-      <FlatButton {...this.props} label="Logout" onClick={this.handleLogin} />
+      <FlatButton {...this.props} label="Logout" onClick={this.handleLogout} />
     );
   }
 }
@@ -83,8 +86,9 @@ class Header extends Component {
         /> */}
         <AppBar
           title={this.props.title}
-          iconElementRight={thisToggle ? <Logged /> : <Login />}
-          onClick={this.handleTouch.bind(this)}
+          // iconElementRight={thisToggle ? <Logged /> : <Logout />}
+          iconElementRight={<Logout />}
+          // onClick={this.handleTouch.bind(this)}
         />
       </div>
     );

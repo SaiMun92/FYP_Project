@@ -6,16 +6,17 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import LinearProgress from 'material-ui/LinearProgress';
+import Slider from 'material-ui/Slider';
 
 import Test from './test';
 
-const style = {
-  height: 100,
-  width: 100,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block',
-};
+// const style = {
+//   height: 100,
+//   width: 100,
+//   margin: 20,
+//   textAlign: 'center',
+//   display: 'inline-block',
+// };
 
 // the children of paper must be a react node. e.g. <App />
 class VideoController extends Component {
@@ -23,6 +24,8 @@ class VideoController extends Component {
     super(props);
     this.state = {
       playBool: true,
+      slider: 0,
+      sliderMax: 0,
     };
     this.loadingScreen = this.loadingScreen.bind(this);
   }
@@ -65,12 +68,19 @@ class VideoController extends Component {
         return (
           <div className="controlsContainer">
             <div className="image">
-              <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
+              <img src={'/images/up_arrow.png'} onClick={this.rotateUp.bind(this)}/>
+              <img src={'/images/left_arrow.png'} onClick={this.rotateLeft.bind(this)}/>
+              <img src={'/images/prev.png'} onClick={this.prevHandler.bind(this)}/>
               <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
               <img src={'/images/pause.png'} onClick={this.pauseButton.bind(this)}/>
               <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
-              <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
+              <img src={'/images/next.png'} onClick={this.nextHandler.bind(this)}/>
+              <img src={'/images/right_arrow.png'} onClick={this.rotateRight.bind(this)}/>
+              <img src={'/images/down_arrow.png'} onClick={this.rotateDown.bind(this)}/>
             </div>
+            {/* <MuiThemeProvider>
+              <Slider value={this.state.slider} min={0} max={this.state.sliderMax-1} step={1} onChange={this.handelSlider}/>
+            </MuiThemeProvider> */}
           </div>
         );
       }
@@ -78,16 +88,33 @@ class VideoController extends Component {
         return (
           <div className="controlsContainer">
             <div className="image">
-              <img src={'/images/prev.png'} onClick={() => hyperlapse.prev()}/>
+              <img src={'/images/up_arrow.png'} onClick={this.rotateUp.bind(this)}/>
+              <img src={'/images/left_arrow.png'} onClick={this.rotateLeft.bind(this)}/>
+              <img src={'/images/prev.png'} onClick={this.prevHandler.bind(this)}/>
               <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
               <img src={'/images/play.png'} onClick={this.resumeButton.bind(this)}/>
               <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
-              <img src={'/images/next.png'} onClick={() => hyperlapse.next()}/>
+              <img src={'/images/next.png'} onClick={this.nextHandler.bind(this)}/>
+              <img src={'/images/right_arrow.png'} onClick={this.rotateRight.bind(this)}/>
+              <img src={'/images/down_arrow.png'} onClick={this.rotateDown.bind(this)}/>
             </div>
+            {/* <MuiThemeProvider>
+              <Slider value={this.state.slider} min={0} max={this.state.sliderMax-1} step={1} onChange={this.handelSlider}/>
+            </MuiThemeProvider> */}
           </div>
         );
       }
     }
+  }
+
+  prevHandler() {
+    this.setState({ playBool: false });
+    hyperlapse.prev();
+  }
+
+  nextHandler() {
+    this.setState({ playBool: false });
+    hyperlapse.next();
   }
 
   pauseButton() {
@@ -106,6 +133,32 @@ class VideoController extends Component {
 
   decreaseSpeed() {
     hyperlapse.millis +=20;
+  }
+
+  rotateLeft() {
+    hyperlapse.position.x -= 20;
+  }
+
+  rotateRight() {
+    hyperlapse.position.x += 20;
+  }
+
+  rotateUp() {
+    hyperlapse.position.y +=20;
+  }
+
+  rotateDown() {
+    hyperlapse.position.y -=20;
+  }
+
+  // hyperlapse.onFrame(e) {
+  //   this.setState({ slider: e.position });
+  //   this.setState({ sliderMax: e.max });
+  // }
+
+
+  handleSlider = (event, value) => {
+    this.setState({ slider: value});
   }
 
   render() {

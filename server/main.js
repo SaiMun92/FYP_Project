@@ -1,8 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/collections/gps';
+import { Gps } from '../imports/collections/gps';
 import axios from 'axios';
 
 Meteor.startup(() => {
+  Meteor.publish('gps', function() {
+    return Gps.find({});
+  });
+  
   Meteor.methods({
     // this method will return the access_token
     //http://stackoverflow.com/questions/38884522/promise-pending

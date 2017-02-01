@@ -58,7 +58,18 @@ class UserListitem extends Component {
   linkToVideo = () => {
     // insert into Db here
     // this.props.inputData(this.props.item.mapPoints);
-    browserHistory.push("video/" + this.props.item.id);
+    Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(res.map.polyline);
+        let decodedPolyline = polyline.decode(res.map.polyline);
+        let id = this.props.item.id.toString();
+        this.props.inputData(decodedPolyline);
+        browserHistory.push("video/" + this.props.item.id);
+      }
+    });
+
   };
 
 
@@ -67,17 +78,20 @@ class UserListitem extends Component {
       if (err) {
         console.log(err);
       } else {
+        // console.log(res.map.polyline);
         let decodedPolyline = polyline.decode(res.map.polyline);
         let id = this.props.item.id.toString();
         this.props.inputData(decodedPolyline);
         Meteor.call('gps.insert', id, decodedPolyline);
       }
     });
-
-
-    // console.log(decodedPolyline);
-
   };
+
+  // handleClick = () => {
+  //   this.props.inputData(this.props.polyline);
+  //   let id = this.props.item.id.toString();
+  //   Meteor.call('gps.insert', id, this.props.polyline);
+  // }
 
   render() {
     // this was passed from user_list.js
@@ -97,7 +111,7 @@ class UserListitem extends Component {
     ];
 
     // link title and url
-    const shareUrl = `http://127.0.0.1:8080/video/${this.props.item.id}`;
+    const shareUrl = `http://127.0.0.1:3000/shareVideo/${this.props.item.id}`;
     const title = 'Check out where i run today!';
 
     // Over here needs to include in a key that is making a warning in the console.

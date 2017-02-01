@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -18,7 +14,7 @@ let pano = document.getElementById('pano');
 let px, py;
 let onPointerDownPointerX=0, onPointerDownPointerY=0;
 
-class Video extends Component {
+class ShareVideo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -228,7 +224,6 @@ class Video extends Component {
 
 
   render() {
-    console.log(this.props.data);
     return (
       <div>
 	      <div id="video_map" className="map-container"></div>
@@ -242,10 +237,4 @@ class Video extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    data: state.data
-  };
-}
-
-export default connect(mapStateToProps)(Video);
+export default ShareVideo;

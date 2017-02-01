@@ -1,8 +1,17 @@
 /* CSS declarations go here */
 body, html {
-  height: 100vh;
-  width: 100%;
+  margin:0px;
+  padding:0px;
   overflow: hidden;
+  -webkit-transition: background 1.5s linear;
+  -moz-transition: background 1.5s linear;
+  -o-transition: background 1.5s linear;
+  -ms-transition: background 1.5s linear;
+  transition: background 1.5s linear;
+}
+
+h1 {
+  font-size: 4em;
 }
 
 #map {
@@ -23,8 +32,8 @@ body, html {
 }
 
 #controller {
-  width: 500px;
-  height: 60px;
+  width: 600px;
+  height: 70px;
   top: 80%;
   left: 30%;
   border-radius: 25px;
@@ -38,6 +47,7 @@ body, html {
   position:absolute;
   right:0;
   z-index: 0;
+  height: 100vh;
 }
 
 .userlist {
@@ -71,13 +81,20 @@ body, html {
 
 
 .controlsContainer {
-  width: 100%;
-  margin: 0 auto;
-  padding-bottom: 1em;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
 .image {
   width: 100%;
   display: inline-block;
+}
+
+.blockText {
+  margin-left: auto;
+  margin-right: auto;
+  width: 6em;
+  text-align: center;
 }

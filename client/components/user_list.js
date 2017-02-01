@@ -12,6 +12,7 @@ import RunningIcon from 'material-ui/svg-icons/Maps/directions-run';
 import UserListitem from '../containers/user_list_item';
 import Infinite from 'react-infinite';
 import axios from 'axios';
+import polyline from 'polyline';
 
 // this part needs to change to Strava
 // const mshealth = new MicrosoftHealth({
@@ -66,6 +67,20 @@ class UserList extends Component {
         console.log(error);
       });
   }
+
+  // componentDidMount() {
+  //   const ListViewItem = this.props.user_activities.map((item) => {
+  //     Meteor.call('getIndividualActivity', item.id, this.props.access_token, (error, response) => {
+  //       if (error) {
+  //         console.log(error);
+  //       } else {
+  //         let decodedPolyline = polyline.decode(response.map.polyline);
+  //         this.setState({ _runActivity: decodedPolyline });
+  //         console.log(response);
+  //       }
+  //     });
+  //   });
+  // }
 
   render() {
 

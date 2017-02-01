@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import { Session } from 'meteor/session';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -49,8 +50,10 @@ class Main extends Component {
     /* excellent place to call the api */
   componentWillMount() {
     // this {code} must be called at the same
-    const code = this.props.location.query.code;
-    Meteor.call('getAccessToken', code, (err, res) => {
+    // const code = this.props.location.query.code;
+    Session.set("authorizeCode", this.props.location.query.code);
+    const authorizeCode = Session.get("authorizeCode");
+    Meteor.call('getAccessToken', authorizeCode, (err, res) => {
       if (err) {
         console.log(err);
       }
@@ -77,7 +80,7 @@ class Main extends Component {
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-          <Header title="Home"/>
+          <Header title="Home" access_token={this.state.access_token}/>
         </MuiThemeProvider>
         <div>
           <Maps />
