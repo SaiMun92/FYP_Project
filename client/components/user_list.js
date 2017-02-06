@@ -57,16 +57,6 @@ class UserList extends Component {
     // });
   }
 
-  loadIndividualActivities(id) {
-    let url = `https://www.strava.com/api/v3/activities/${id}?access_token=${this.props.access_token}`;
-    return axios.get(url)
-      .then(response => {
-        return response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
 
   // componentDidMount() {
   //   const ListViewItem = this.props.user_activities.map((item) => {
@@ -83,7 +73,7 @@ class UserList extends Component {
   // }
 
   render() {
-
+    // console.log(this.props.user_activities);
     let Greeting = `Welcome, ${this.props.name}`;
     // const activity = this.state._runActivity;
     const activity = this.props.user_activities;
@@ -93,9 +83,13 @@ class UserList extends Component {
     }
 
     const ListViewItem = activity.map((item) => {
-      return (
-        <UserListitem key={item.id} item={item} access_token={this.props.access_token}/>
-      );
+      if (!item) {
+        return <div>Loading...</div>
+      } else {
+        return (
+          <UserListitem key={item.id} item={item} access_token={this.props.access_token}/>
+        );
+      }
     });
     // const ListViewItem = activity.map((item) => {
     //

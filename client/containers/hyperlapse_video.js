@@ -31,6 +31,7 @@ class Video extends Component {
       py: "",
       onPointerDownPointerX: 0,
       onPointerDownPointerY: 0,
+      data: [],
     };
   }
 
@@ -225,7 +226,11 @@ class Video extends Component {
   // onClickButton() {
   //   console.log("clicked me!");
   // }
-
+  componentWillUnmount() {
+    console.log("unmount me!");
+    // this function will fire when u return from the video to the main page. Good place to unmount components
+    this.setState({ data: [] });
+  }
 
   render() {
     console.log(this.props.data);

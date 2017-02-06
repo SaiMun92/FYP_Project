@@ -57,14 +57,16 @@ class UserListitem extends Component {
 
   linkToVideo = () => {
     // insert into Db here
-    // this.props.inputData(this.props.item.mapPoints);
+    // let decodedPolyline = polyline.decode(this.props.item.map.polyline);
+    // this.props.inputData(decodedPolyline);
+    // browserHistory.push("video/" + this.props.item.id);
+
     Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(res.map.polyline);
+        console.log(res);
         let decodedPolyline = polyline.decode(res.map.polyline);
-        let id = this.props.item.id.toString();
         this.props.inputData(decodedPolyline);
         browserHistory.push("video/" + this.props.item.id);
       }
@@ -74,11 +76,17 @@ class UserListitem extends Component {
 
 
   handleClick = () => {
+
+    // let decodedPolyline = polyline.decode(this.props.item.map.polyline);
+    // this.props.inputData(decodedPolyline);
+    // let id = this.props.item.id.toString();
+    // Meteor.call('gps.insert', id, decodedPolyline);
+
     Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
       if (err) {
         console.log(err);
       } else {
-        // console.log(res.map.polyline);
+        console.log(res);
         let decodedPolyline = polyline.decode(res.map.polyline);
         let id = this.props.item.id.toString();
         this.props.inputData(decodedPolyline);

@@ -10,6 +10,9 @@ import Slider from 'material-ui/Slider';
 
 import Test from './test';
 
+/* React Router */
+import {browserHistory} from 'react-router';
+
 // const style = {
 //   height: 100,
 //   width: 100,
@@ -129,6 +132,7 @@ class VideoController extends Component {
 
   increaseSpeed() {
     hyperlapse.millis -=20;
+    // browserHistory.goBack();
   }
 
   decreaseSpeed() {

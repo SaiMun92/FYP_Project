@@ -27,8 +27,8 @@ const muiTheme = getMuiTheme({
   },
 });
 
-// This class is a temporary measure to login and authenticate to the MicrosoftHealth API.
-
+// this actually render slower than componentWillMount
+let user_data = [];
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +36,7 @@ class Main extends Component {
       access_token: '',
       user_activities: [],
       name: '',
+      user_data: [],
     };
   }
   // componentWillMount() {
@@ -58,16 +59,29 @@ class Main extends Component {
         console.log(err);
       }
       if (!err) {
-        console.log(res);
-        this.setState({ access_token: res.access_token });
-        this.setState({ name: res.athlete.lastname });
+        // console.log(res);
+        this.setState({ access_token: res.access_token, name: res.athlete.lastname });
 
         let url = `https://www.strava.com/api/v3/athlete/activities?access_token=${res.access_token}&per_page=10`;
         // console.log(url);
         axios.get(url)
           .then(response => {
-            console.log(response.data);
+            // console.log(response.data);
+            // i want to increase the speed
+            // can i do a map function and then under every object perform an Method.call;
             this.setState({ user_activities: response.data });
+            // const IndividualItem = response.data.map((item) => {
+            //   const id = item.id;
+            //   Meteor.call('getIndividualActivity', id, this.state.access_token, (err, res) => {
+            //     if(err) {
+            //       console.log(err);
+            //     } else {
+            //       // append the object into an array
+            //       user_data.push(res);
+            //       this.setState({ user_data: user_data });
+            //     }
+            //   });
+            // });
           })
           .catch(error => {
             console.log(error);
@@ -77,6 +91,9 @@ class Main extends Component {
   }
 
   render() {
+    // console.log(user_data);
+    // console.log(this.state.user_data);
+    // console.log(this.state.user_activities);
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
