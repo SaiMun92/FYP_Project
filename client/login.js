@@ -14,8 +14,8 @@ const divStyle = {
 
 class LoginMain extends Component {
   login() {
-    window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://127.0.0.1:3000/main&scope=write&state=mystate&approval_prompt=force`;
-    //window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://128.199.112.157/main&scope=write&state=mystate&approval_prompt=force`;
+    //window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://127.0.0.1:3000/main&scope=write&state=mystate&approval_prompt=force`;
+    window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://128.199.112.157/main&scope=write&state=mystate&approval_prompt=force`;
   }
   render() {
     return (
