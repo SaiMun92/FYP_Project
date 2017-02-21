@@ -14,6 +14,7 @@ import polyline from 'polyline';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { inputData } from '../actions/index';
+import { inputAddress } from '../actions/index';
 
 /* React Router */
 import {browserHistory} from 'react-router';
@@ -60,7 +61,8 @@ class UserListitem extends Component {
     // let decodedPolyline = polyline.decode(this.props.item.map.polyline);
     // this.props.inputData(decodedPolyline);
     // browserHistory.push("video/" + this.props.item.id);
-
+    returnPath = window.location.href;
+    this.props.inputAddress(returnPath);
     Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
       if (err) {
         console.log(err);
@@ -81,7 +83,8 @@ class UserListitem extends Component {
     // this.props.inputData(decodedPolyline);
     // let id = this.props.item.id.toString();
     // Meteor.call('gps.insert', id, decodedPolyline);
-
+    returnPath = window.location.href;
+    this.props.inputAddress(returnPath);
     Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
       if (err) {
         console.log(err);
@@ -118,8 +121,10 @@ class UserListitem extends Component {
       // add another action here to create another button
     ];
 
-    // link title and url
-    const shareUrl = `http://127.0.0.1:3000/shareVideo/${this.props.item.id}`;
+    // For development purpose only
+    // const shareUrl = `http://127.0.0.1:3000/shareVideo/${this.props.item.id}`;
+
+    const shareUrl = `http://128.199.112.157/shareVideo/${this.props.item.id}`;
     const title = 'Check out where i run today!';
 
     // Over here needs to include in a key that is making a warning in the console.
@@ -197,23 +202,7 @@ class UserListitem extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ inputData }, dispatch)
+  return bindActionCreators({ inputData, inputAddress }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(UserListitem);
-
-
-
-
-// import React, { Component} from 'react';
-//
-// class UserListitem extends Component {
-//   render() {
-//     console.log(this.props.item);
-//     return (
-//       <div></div>
-//     );
-//   }
-// }
-//
-// export default UserListitem;

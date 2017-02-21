@@ -26,7 +26,7 @@ h1 {
   border-radius: 75px;
   position: absolute;
   left: 3%;
-  top: 3%;
+  top: 10%;
   z-index: 3;
   box-shadow:0 10px 30px rgba(0, 0, 0, 0.19), 0 6px 10px rgba(0, 0, 0, 0.23);
 }

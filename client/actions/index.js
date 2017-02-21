@@ -1,10 +1,10 @@
 export const INPUT_COORD = 'INPUT_COORD';
-export const INPUT_MAP = 'INPUT_MAP';
+export const INPUT_ADDRESS = 'INPUT_ADDRESS';
 
-export function inputMap(map) {
+export function inputAddress(address) {
   return {
-    type: INPUT_MAP,
-    map
+    type: INPUT_ADDRESS,
+    address
   };
 }
 

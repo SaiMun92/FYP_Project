@@ -22,9 +22,6 @@ class Maps extends Component {
     const runningPath = this.props.data.map((data) => {
 
       if (typeof data !== 'undefined') {
-        // const lat = data.location.latitude/10000000;
-        // const lng = data.location.longitude/10000000;
-        // running_cord.push({lat: lat, lng: lng });
         running_cord.push({lat: data[0], lng: data[1] });
       }
     });

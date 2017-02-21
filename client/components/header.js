@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import Home from 'material-ui/svg-icons/action/home';
 import {browserHistory} from 'react-router';
 import { Session } from 'meteor/session';
 import axios from 'axios';
@@ -58,6 +59,14 @@ Logged.muiName = 'IconMenu';
  * This example is taking advantage of the composability of the `AppBar`
  * to render different components depending on the application state.
  */
+
+ const styles = {
+   mediumIcon: {
+    width: 28,
+    height: 28,
+  }
+ }
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -87,6 +96,7 @@ class Header extends Component {
         <AppBar
           title={this.props.title}
           // iconElementRight={thisToggle ? <Logged /> : <Logout />}
+          iconElementLeft={<IconButton iconStyle={styles.mediumIcon}><Home /></IconButton>}
           iconElementRight={<Logout />}
           // onClick={this.handleTouch.bind(this)}
         />

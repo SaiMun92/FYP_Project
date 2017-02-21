@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {browserHistory} from 'react-router';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Slider from 'material-ui/Slider';
-
+import AppBar from 'material-ui/AppBar';
 import VideoController from '../components/videoController';
-
+import IconButton from 'material-ui/IconButton';
+import ReturnButton from 'material-ui/svg-icons/Hardware/keyboard-return';
 
 let elevation = 0;
 let latLngPoints = [];
@@ -232,11 +234,17 @@ class Video extends Component {
     this.setState({ data: [] });
   }
 
+  handleClick = () => {
+    window.location.href = this.props.address;
+  }
+
   render() {
-    console.log(this.props.data);
     return (
       <div>
-	      <div id="video_map" className="map-container"></div>
+        <MuiThemeProvider>
+          <AppBar title='Video' iconElementLeft={<IconButton><ReturnButton /></IconButton>} onLeftIconButtonTouchTap={this.handleClick.bind(this)}/>
+        </MuiThemeProvider>
+	      <div id="video_map"></div>
         <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
         <div id="controller">
           <VideoController Progress={this.state.Progress} Length={this.state.Length}
@@ -249,6 +257,7 @@ class Video extends Component {
 
 function mapStateToProps(state) {
   return {
+    address: state.address,
     data: state.data
   };
 }
