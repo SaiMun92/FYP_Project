@@ -14,13 +14,6 @@ import Infinite from 'react-infinite';
 import axios from 'axios';
 import polyline from 'polyline';
 
-// this part needs to change to Strava
-// const mshealth = new MicrosoftHealth({
-//         clientId: "70948966-da9f-49bd-9124-fe2ba4c4ce1e",
-//         redirectUri: "http://localhost:3000",
-//         scope: "mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation"
-// });
-
 const sevenDaysAgo = new Date();
 sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30 );
 
@@ -33,44 +26,6 @@ class UserList extends Component {
       _runActivity: [],
     };
   }
-
-  componentWillMount() {
-    // mshealth.getProfile().then((profile) => {
-    //   this.setState({ _Greeting: "Welcome, " + profile.firstName });
-    // });
-    // mshealth.getActivities({
-    //   startTime: sevenDaysAgo.toISOString(),
-    //   endTime: (new Date()).toISOString(),
-    //   activityTypes: "Run",
-    //   // deviceID is optional but this deviceID below refers to the band ID
-    //   // deviceIds: "FFFFFFFF-FFFF-FFFF-FFFF-005094355249",
-    //   activityIncludes: "1,2,3",
-    //   // activityIds: "2519243373560010070"
-    //   // 1 - detail, 2 - MinuteSummaries, 3 - Map Points
-    // }).then((activities) => {
-    //   //const message = "You logged " + activities.itemCount + " activities in the last 30 days.";
-    //   // activities.runActivities contain all the activities
-    //   //console.log(activities.runActivities);
-    //   this.setState({ _runActivity: activities.runActivities });
-    //   console.log(activities.itemCount);
-    //   //console.log(this.state._runActivity);
-    // });
-  }
-
-
-  // componentDidMount() {
-  //   const ListViewItem = this.props.user_activities.map((item) => {
-  //     Meteor.call('getIndividualActivity', item.id, this.props.access_token, (error, response) => {
-  //       if (error) {
-  //         console.log(error);
-  //       } else {
-  //         let decodedPolyline = polyline.decode(response.map.polyline);
-  //         this.setState({ _runActivity: decodedPolyline });
-  //         console.log(response);
-  //       }
-  //     });
-  //   });
-  // }
 
   render() {
     // console.log(this.props.user_activities);
@@ -91,30 +46,6 @@ class UserList extends Component {
         );
       }
     });
-    // const ListViewItem = activity.map((item) => {
-    //
-    //   console.log(item.id);
-    //   //let userData = this.loadIndividualActivities(item.id);
-    //   let userData = axios.get(`https://www.strava.com/api/v3/activities/${item.id}?access_token=${this.props.access_token}`);
-    //   let data = userData.then((response) => {
-    //     // console.log(response.data);
-    //     return response.data;
-    //   });
-    //
-    //   console.log(data);
-    //   return Meteor.call('getIndividualActivity', item.id, this.props.access_token, (err, res) => {
-    //     if (err) {
-    //       console.log(err);
-    //     } else {
-    //       console.log(res);
-    //       return (
-    //         <div>
-    //           <UserListitem key={item.id} item={item} data={res} />
-    //         </div>
-    //       );
-    //     }
-    //   });
-    // });
 
     return (
       <Infinite containerHeight={660} elementHeight={650} className="userlist">
