@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Slider from 'material-ui/Slider';
+import LinearProgress from 'material-ui/LinearProgress';
 
 import VideoController from '../components/videoController';
 
@@ -21,12 +23,16 @@ class ShareVideo extends Component {
       Progress: '',
       Length: '',
       Value: '',
+      playBool: true,
       LoadingBool: true,
       isMoving: false,
       px: "",
       py: "",
       onPointerDownPointerX: 0,
       onPointerDownPointerY: 0,
+      data: [],
+      sliderPosition: 0,
+      sliderMax: 1,
     };
   }
 
@@ -147,9 +153,9 @@ class ShareVideo extends Component {
   		console.log(e);
   	};
 
-    hyperlapse.onFrame = function(e) {
+    hyperlapse.onFrame = (e) => {
       cameraPinMarker.setPosition(e.point.location);
-
+      this.setState({ sliderPosition: e.position, sliderMax: e.max-1 });
     };
 
     hyperlapse.onRouteProgress = (e) => {
@@ -207,30 +213,186 @@ class ShareVideo extends Component {
   			travelMode: google.maps.DirectionsTravelMode.WALKING
   		}
   	};
-
-  	// directions_service.route(route.request, function(response, status) {
-  	// 	if (status == google.maps.DirectionsStatus.OK) {
-  	// 		hyperlapse.generate( {route:response} );
-  	// 	} else {
-  	// 		console.log(status);
-  	// 	}
-  	// });
     hyperlapse.generate(route);
   }
 
-  // onClickButton() {
-  //   console.log("clicked me!");
-  // }
+  handleSlider = (event, value) => {
+    event.preventDefault();
+    console.log("value: ", value);
+    hyperlapse.setPosition(value);
+  }
 
+
+  loadingScreen() {
+    // console.log(typeof this.props.Length);
+    if (this.state.LoadingBool == true) {
+      if (typeof this.state.Length == 'string' || typeof this.state.Value == 'string') {
+        return (
+          <div id="loadingController">
+            <div className="loader">
+              <p>
+                Generating Route...
+              </p>
+              <MuiThemeProvider>
+                <LinearProgress mode="indeterminate" />
+              </MuiThemeProvider>
+            </div>
+          </div>
+        );
+      }
+      else {
+        let percentage = Math.round((this.state.Value / this.state.Length) * 100);
+        return (
+          <div id="loadingController">
+            <div className="loader">
+              <div className="percentage">
+                <p>
+                  {percentage}%
+                </p>
+                <MuiThemeProvider>
+                  <LinearProgress  mode="determinate" value={percentage}/>
+                </MuiThemeProvider>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    else if (this.state.LoadingBool == false) {
+
+      // load the pause play buttons here.
+      if (this.state.playBool == true) {
+        return (
+          <div id="controller">
+            <div className="controlsContainer">
+              <div className="image">
+                <img src={'/images/up_arrow.png'} onClick={this.rotateUp.bind(this)}/>
+                <img src={'/images/left_arrow.png'} onClick={this.rotateLeft.bind(this)}/>
+                <img src={'/images/prev.png'} onClick={this.prevHandler.bind(this)}/>
+                <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
+                <img src={'/images/pause.png'} onClick={this.pauseButton.bind(this)}/>
+                <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
+                <img src={'/images/next.png'} onClick={this.nextHandler.bind(this)}/>
+                <img src={'/images/right_arrow.png'} onClick={this.rotateRight.bind(this)}/>
+                <img src={'/images/down_arrow.png'} onClick={this.rotateDown.bind(this)}/>
+              </div>
+              <div className="slider">
+                <MuiThemeProvider>
+                  <Slider
+                    defaultValue={0}
+                    value={this.state.sliderPosition}
+                    min={0}
+                    max={this.state.sliderMax}
+                    step={1}
+                    onChange={this.handleSlider}
+                    style={{
+                      position: 'relative',
+                      top: '-10px',
+                      left: '0px',
+                      width: '100%',
+                      height: '2px',
+                    }}
+                  />
+                </MuiThemeProvider>
+              </div>
+            </div>
+          </div>
+        );
+      }
+      else {
+        return (
+          <div id="controller">
+            <div className="controlsContainer">
+              <div className="image">
+                <img src={'/images/up_arrow.png'} onClick={this.rotateUp.bind(this)}/>
+                <img src={'/images/left_arrow.png'} onClick={this.rotateLeft.bind(this)}/>
+                <img src={'/images/prev.png'} onClick={this.prevHandler.bind(this)}/>
+                <img src={'/images/fast-rewind.png'} onClick={this.decreaseSpeed.bind(this)}/>
+                <img src={'/images/play.png'} onClick={this.resumeButton.bind(this)}/>
+                <img src={'/images/fast-forward.png'} onClick={this.increaseSpeed.bind(this)}/>
+                <img src={'/images/next.png'} onClick={this.nextHandler.bind(this)}/>
+                <img src={'/images/right_arrow.png'} onClick={this.rotateRight.bind(this)}/>
+                <img src={'/images/down_arrow.png'} onClick={this.rotateDown.bind(this)}/>
+              </div>
+              <div className="slider">
+                <MuiThemeProvider>
+                  <Slider
+                    defaultValue={0}
+                    value={this.state.sliderPosition}
+                    min={0}
+                    max={this.state.sliderMax}
+                    step={1}
+                    onChange={this.handleSlider}
+                    style={{
+                      position: 'relative',
+                      top: '-10px',
+                      left: '0px',
+                      width: '100%',
+                      height: '2px',
+                    }}
+                  />
+                </MuiThemeProvider>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    }
+  }
+
+  prevHandler() {
+    this.setState({ playBool: false });
+    hyperlapse.prev();
+  }
+
+  nextHandler() {
+    this.setState({ playBool: false });
+    hyperlapse.next();
+  }
+
+  pauseButton() {
+    hyperlapse.pause();
+    this.setState({ playBool: false });
+  }
+
+  resumeButton() {
+    hyperlapse.play();
+    this.setState({ playBool: true });
+  }
+
+  increaseSpeed() {
+    hyperlapse.millis -=20;
+    // browserHistory.goBack();
+  }
+
+  decreaseSpeed() {
+    hyperlapse.millis +=20;
+  }
+
+  rotateLeft() {
+    hyperlapse.position.x -= 20;
+  }
+
+  rotateRight() {
+    hyperlapse.position.x += 20;
+  }
+
+  rotateUp() {
+    hyperlapse.position.y +=20;
+  }
+
+  rotateDown() {
+    hyperlapse.position.y -=20;
+  }
 
   render() {
     return (
       <div>
 	      <div id="video_map" className="map-container"></div>
         <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
-        <div id="controller">
-          <VideoController Progress={this.state.Progress} Length={this.state.Length}
-            Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
+        <div>
+          {this.loadingScreen()}
         </div>
       </div>
     );

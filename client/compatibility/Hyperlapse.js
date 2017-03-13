@@ -844,6 +844,7 @@ var Hyperlapse = function(container, params) {
 		self.pause();
 
 		if(_point_index+1 != _h_points.length) {
+			// _point_index is an integer, it cannot be a double.
 			_point_index++;
 			drawMaterial();
 		}

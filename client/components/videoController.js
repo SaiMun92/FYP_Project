@@ -8,8 +8,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import LinearProgress from 'material-ui/LinearProgress';
 import Slider from 'material-ui/Slider';
 
-import Test from './test';
-
 /* React Router */
 import {browserHistory} from 'react-router';
 
@@ -32,6 +30,7 @@ class VideoController extends Component {
     };
     this.loadingScreen = this.loadingScreen.bind(this);
   }
+
   loadingScreen() {
     // console.log(typeof this.props.Length);
     if (this.props.LoadingBool == true) {
@@ -155,14 +154,6 @@ class VideoController extends Component {
     hyperlapse.position.y -=20;
   }
 
-  // hyperlapse.onFrame(e) {
-  //   this.setState({ slider: e.position });
-  //   this.setState({ sliderMax: e.max });
-  // }
-
-  handleSlider = (event, value) => {
-    this.setState({ slider: value});
-  }
 
   render() {
     return (

@@ -79,9 +79,6 @@ class Header extends Component {
     this.setState({logged: logged});
   };
 
-  handleTouch = () => {
-    browserHistory.push("test");
-  };
 
   render() {
     return (
@@ -98,7 +95,6 @@ class Header extends Component {
           // iconElementRight={thisToggle ? <Logged /> : <Logout />}
           iconElementLeft={<IconButton iconStyle={styles.mediumIcon}><Home /></IconButton>}
           iconElementRight={<Logout />}
-          // onClick={this.handleTouch.bind(this)}
         />
       </div>
     );
