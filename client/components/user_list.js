@@ -14,9 +14,6 @@ import Infinite from 'react-infinite';
 import axios from 'axios';
 import polyline from 'polyline';
 
-const sevenDaysAgo = new Date();
-sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 30 );
-
 // This file calls the mshealth api and get the data from its server and pass them as props to user_list_item.
 class UserList extends Component {
   constructor(props) {
@@ -48,7 +45,7 @@ class UserList extends Component {
     });
 
     return (
-      <Infinite containerHeight={660} elementHeight={650} className="userlist">
+      <Infinite containerHeight={900} elementHeight={650} className="userlist">
         <MobileTearSheet>
           <List>
             <ListItem

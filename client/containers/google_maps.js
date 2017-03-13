@@ -10,11 +10,26 @@ class Maps extends Component {
   }
 
   componentDidMount() {
-    const map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
-      center: {lat: 1.359803, lng: 103.837521},
-      // coordinates of Singapore
-    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: {lat: position.coords.latitude, lng: position.coords.longitude},
+          // Current Location of user
+        });
+
+        let infoWindow = new google.maps.InfoWindow({map: map});
+
+        let pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Your Current Location!');
+      });
+    } else {
+      alert('Geo Location feature is not supported in this browser.');
+    }
   }
 
   componentDidUpdate() {
@@ -78,7 +93,7 @@ class Maps extends Component {
     //console.log(this.props.polyline); // this is what gives the Array[0] in the beginning.
     // console.log(running_cord);
     return (
-      <div id="map" className="map-container"></div>
+      <div id="map"></div>
     );
   }
 }

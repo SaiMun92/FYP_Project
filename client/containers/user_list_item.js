@@ -9,6 +9,11 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
 import polyline from 'polyline';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
+
+/* mongoDB */
+import { createContainer } from 'meteor/react-meteor-data';
+import { Gps } from '../../imports/collections/gps';
 
 /* Redux */
 import { bindActionCreators } from 'redux';
@@ -34,11 +39,22 @@ const FacebookIcon = generateShareIcon('facebook');
 const TwitterIcon = generateShareIcon('twitter');
 const GooglePlusIcon = generateShareIcon('google');
 
+const style = {
+  container: {
+    position: 'relative',
+  },
+  refresh: {
+    display: 'inline-block',
+    position: 'relative',
+  },
+};
+
 class UserListitem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      loading: false,
     };
   }
 
@@ -78,22 +94,22 @@ class UserListitem extends Component {
 
 
   handleClick = () => {
-
-    // let decodedPolyline = polyline.decode(this.props.item.map.polyline);
-    // this.props.inputData(decodedPolyline);
-    // let id = this.props.item.id.toString();
-    // Meteor.call('gps.insert', id, decodedPolyline);
     returnPath = window.location.href;
     this.props.inputAddress(returnPath);
+
+    // add a loading screen
+    // set a loading state to true
+    this.setState({ loading: true });
+
     Meteor.call('getIndividualActivity',this.props.item.id, this.props.access_token,(err,res) => {
       if (err) {
         console.log(err);
       } else {
         console.log(res);
         let decodedPolyline = polyline.decode(res.map.polyline);
-        let id = this.props.item.id.toString();
+        let id = this.props.item.id.toString(); // have to convert it to string as meteor does not allow int as _id.
         this.props.inputData(decodedPolyline);
-        Meteor.call('gps.insert', id, decodedPolyline);
+        this.setState({ loading: false });
       }
     });
   };
@@ -107,7 +123,6 @@ class UserListitem extends Component {
   render() {
     // this was passed from user_list.js
     const item = this.props.item;
-    // console.log(item);
     const date = item.start_date;  // this is a string
     const newDate = date.slice(8,10) + "/" + date.slice(5,7);
     // console.log(newDate);  // shows what contains in the item
@@ -127,77 +142,92 @@ class UserListitem extends Component {
     const shareUrl = `http://128.199.112.157/shareVideo/${this.props.item.id}`;
     const title = 'Check out where i run today!';
 
-    // Over here needs to include in a key that is making a warning in the console.
-    return (
-      <div>
-        <ListItem
-          primaryText={newDate}
-          //item.caloriesBurnedSummary.totalCalories
-          secondaryText={
-            <p>
-              <span style={{color: darkBlack}}>Total Distance</span> --
-              {item.distance/1000 + " km"}<br />
-              {/* <span style={{color: darkBlack}}>Total Calories</span> --
-              {item.caloriesBurnedSummary.totalCalories} */}
-            </p>
-          }
-          secondaryTextLines={1}
-          leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
-          initiallyOpen={false}
-          primaryTogglesNestedList={false}
-          onClick={this.handleClick.bind(this)}
-          // onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
-          nestedItems={[
-            <ListItem
-              key={1}
-              primaryText="Video"
-              leftIcon={<VideoIcon />}
-              onTouchTap={this.linkToVideo.bind(this)}
-            />,
-            <ListItem
-              key={2}
-              primaryText="Share this Video"
-              leftIcon={<ShareIcon />}
-              onTouchTap={this.handleOpen}
-            />
-          ]}
-        />
-        <Dialog
-          title="Click below to choose which platform you want to share with."
-          actions={actions}
-          modal={true}
-          contentStyle={customContentStyle}
-          open={this.state.open}
-        >
-        {/* add share button */}
-        <div className="shareContainer">
-          <FacebookShareButton
+    if (this.state.loading == true) {
+      return (
+        <div style={style.container}>
+          <RefreshIndicator
+            size={50}
+            left={70}
+            top={0}
+            loadingColor="#FF9800"
+            status="loading"
+            style={style.refresh}
+          />
+        </div>
+      );
+    }
+    else {
+      return (
+        <div>
+          <ListItem
+            primaryText={newDate}
+            //item.caloriesBurnedSummary.totalCalories
+            secondaryText={
+              <p>
+                <span style={{color: darkBlack}}>Total Distance</span> --
+                {item.distance/1000 + " km"}<br />
+                {/* <span style={{color: darkBlack}}>Total Calories</span> --
+                {item.caloriesBurnedSummary.totalCalories} */}
+              </p>
+            }
+            secondaryTextLines={1}
+            leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
+            initiallyOpen={false}
+            primaryTogglesNestedList={false}
+            onClick={this.handleClick.bind(this)}
+            // onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
+            nestedItems={[
+              <ListItem
+                key={1}
+                primaryText="Video"
+                leftIcon={<VideoIcon />}
+                onTouchTap={this.linkToVideo.bind(this)}
+              />,
+              <ListItem
+                key={2}
+                primaryText="Share this Video"
+                leftIcon={<ShareIcon />}
+                onTouchTap={this.handleOpen}
+              />
+            ]}
+          />
+          <Dialog
+            title="Click below to choose which platform you want to share with."
+            actions={actions}
+            modal={true}
+            contentStyle={customContentStyle}
+            open={this.state.open}
+          >
+          {/* add share button */}
+          <div className="shareContainer">
+            <FacebookShareButton
+                url={shareUrl}
+                title={title}
+                className="share-button">
+                <FacebookIcon
+                  size={32}
+                  round />
+            </FacebookShareButton>
+            <TwitterShareButton
               url={shareUrl}
               title={title}
               className="share-button">
-              <FacebookIcon
+              <TwitterIcon
                 size={32}
                 round />
-          </FacebookShareButton>
-          <TwitterShareButton
-            url={shareUrl}
-            title={title}
-            className="share-button">
-            <TwitterIcon
-              size={32}
-              round />
-          </TwitterShareButton>
-          <GooglePlusShareButton
-            url={shareUrl}
-            className="share-button">
-            <GooglePlusIcon
-              size={32}
-              round />
-          </GooglePlusShareButton>
+            </TwitterShareButton>
+            <GooglePlusShareButton
+              url={shareUrl}
+              className="share-button">
+              <GooglePlusIcon
+                size={32}
+                round />
+            </GooglePlusShareButton>
+          </div>
+          </Dialog>
         </div>
-        </Dialog>
-      </div>
-    );
+      );
+    }
   }
 }
 

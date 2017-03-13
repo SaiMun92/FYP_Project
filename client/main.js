@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Session } from 'meteor/session';
+import polyline from 'polyline';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -27,6 +28,11 @@ const muiTheme = getMuiTheme({
   },
 });
 
+const mapStyle = {
+  height: '100%',
+  width: '100%',
+};
+
 // this actually render slower than componentWillMount
 let user_data = [];
 class Main extends Component {
@@ -39,14 +45,6 @@ class Main extends Component {
       user_data: [],
     };
   }
-  // componentWillMount() {
-  //   // const mshealth = new MicrosoftHealth({
-  //   //         clientId: "70948966-da9f-49bd-9124-fe2ba4c4ce1e",
-  //   //         redirectUri: "http://localhost:3000",
-  //   //         scope: "mshealth.ReadProfile mshealth.ReadDevices mshealth.ReadActivityHistory mshealth.ReadActivityLocation"
-  //   // });
-  //   // mshealth.login();
-  // }
 
     /* excellent place to call the api */
   componentWillMount() {
@@ -70,18 +68,22 @@ class Main extends Component {
             // i want to increase the speed
             // can i do a map function and then under every object perform an Method.call;
             this.setState({ user_activities: response.data });
-            // const IndividualItem = response.data.map((item) => {
-            //   const id = item.id;
-            //   Meteor.call('getIndividualActivity', id, this.state.access_token, (err, res) => {
-            //     if(err) {
-            //       console.log(err);
-            //     } else {
-            //       // append the object into an array
-            //       user_data.push(res);
-            //       this.setState({ user_data: user_data });
-            //     }
-            //   });
-            // });
+
+            // over here we can add the map data into the mongoDB database
+
+            const IndividualItem = response.data.map((item) => {
+              const id = item.id;
+              Meteor.call('getIndividualActivity', id, this.state.access_token, (err, res) => {
+                if(err) {
+                  console.log(err);
+                } else {
+                  // append the object into an array
+                  let decodedPolyline = polyline.decode(res.map.polyline);
+                  let id = res.id.toString();
+                  Meteor.call('gps.insert', id, decodedPolyline);
+                }
+              });
+            });
           })
           .catch(error => {
             console.log(error);
@@ -99,7 +101,7 @@ class Main extends Component {
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <Header title="Home" access_token={this.state.access_token}/>
         </MuiThemeProvider>
-        <div>
+        <div style={mapStyle}>
           <Maps />
         </div>
         <MuiThemeProvider>

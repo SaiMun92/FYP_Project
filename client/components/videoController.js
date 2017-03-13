@@ -160,7 +160,6 @@ class VideoController extends Component {
   //   this.setState({ sliderMax: e.max });
   // }
 
-
   handleSlider = (event, value) => {
     this.setState({ slider: value});
   }

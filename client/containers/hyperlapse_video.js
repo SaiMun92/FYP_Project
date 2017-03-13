@@ -242,7 +242,11 @@ class Video extends Component {
     return (
       <div>
         <MuiThemeProvider>
-          <AppBar title='Video' iconElementLeft={<IconButton><ReturnButton /></IconButton>} onLeftIconButtonTouchTap={this.handleClick.bind(this)}/>
+          <AppBar title='Video'
+            iconElementLeft={<IconButton><ReturnButton /></IconButton>}
+            onLeftIconButtonTouchTap={this.handleClick.bind(this)}
+            style={{backgroundColor: '#607D8B',}}
+          />
         </MuiThemeProvider>
 	      <div id="video_map"></div>
         <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>

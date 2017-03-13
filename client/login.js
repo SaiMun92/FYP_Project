@@ -14,8 +14,8 @@ const divStyle = {
 
 class LoginMain extends Component {
   login() {
-    //window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://127.0.0.1:3000/main&scope=write&state=mystate&approval_prompt=force`;
-    window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://128.199.112.157/main&scope=write&state=mystate&approval_prompt=force`;
+    window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://127.0.0.1:3000/main&scope=write&state=mystate&approval_prompt=force`;
+    //window.location.href = `https://www.strava.com/oauth/authorize?client_id=15774&response_type=code&redirect_uri=http://128.199.112.157/main&scope=write&state=mystate&approval_prompt=force`;
   }
   render() {
     return (
@@ -23,8 +23,13 @@ class LoginMain extends Component {
         <h1>
           Introducing GPS Trail Visualizer
         </h1>
+        <div id="PageDetail" className="fadeIn">
+          <p>A web based application that lets you immerse yourselves into a 3D view of your running path.<br />
+          Simply connect your Strava account to get started!</p>
+        </div>
+
         <MuiThemeProvider>
-          <FlatButton label="Login" primary={true} onClick={this.login.bind(this)}/>
+          <FlatButton label="Connect With Strava" primary={true} onClick={this.login.bind(this)}/>
         </MuiThemeProvider>
       </div>
     );

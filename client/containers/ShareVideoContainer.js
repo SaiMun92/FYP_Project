@@ -9,7 +9,7 @@ class ShareVideoContainer extends Component {
   }
   render() {
     // this.props.data is in an object instead of an array
-
+    console.log(this.props.data);
     if (!this.props.data) {
       return (
         <div>Loading...</div>
@@ -25,11 +25,10 @@ class ShareVideoContainer extends Component {
 
 export default createContainer((props) => {
   // this.props.params.id is to get the id in the url field based on react-rotuer
-  const id = props.params.id;
-  console.log(id);
+  const { id } = props.params;
   Meteor.subscribe('gps');
 
-  return { data: Gps.findOne({_id: id}) }
+  return { data: Gps.findOne({ id: id}) }
 }, ShareVideoContainer);
 
 //Users.findOne({}, { fields: { 'alterEgos.name': 1, _id: 0 } });
