@@ -48,8 +48,7 @@ class Main extends Component {
 
     /* excellent place to call the api */
   componentWillMount() {
-    // this {code} must be called at the same
-    // const code = this.props.location.query.code;
+    // this.props.location.query.code is the access code given when u exchange it for an access token
     Session.set("authorizeCode", this.props.location.query.code);
     const authorizeCode = Session.get("authorizeCode");
     Meteor.call('getAccessToken', authorizeCode, (err, res) => {
@@ -64,9 +63,7 @@ class Main extends Component {
         // console.log(url);
         axios.get(url)
           .then(response => {
-            // console.log(response.data);
-            // i want to increase the speed
-            // can i do a map function and then under every object perform an Method.call;
+            console.log(response.data);
             this.setState({ user_activities: response.data });
 
             // over here we can add the map data into the mongoDB database

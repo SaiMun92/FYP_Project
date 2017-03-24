@@ -124,8 +124,10 @@ class UserListitem extends Component {
     // this was passed from user_list.js
     const item = this.props.item;
     const date = item.start_date;  // this is a string
-    const newDate = date.slice(8,10) + "/" + date.slice(5,7);
-    // console.log(newDate);  // shows what contains in the item
+    const newDate = date.slice(8,10) + "/" + date.slice(5,7) + " " + item.name;
+    const minutes = Math.floor(item.elapsed_time/60);
+    const seconds = item.elapsed_time - (minutes * 60);
+
 
     const actions = [
       <FlatButton
@@ -166,14 +168,14 @@ class UserListitem extends Component {
               <p>
                 <span style={{color: darkBlack}}>Total Distance</span> --
                 {item.distance/1000 + " km"}<br />
-                {/* <span style={{color: darkBlack}}>Total Calories</span> --
-                {item.caloriesBurnedSummary.totalCalories} */}
+                <span style={{color: darkBlack}}>Time Taken</span> --
+                {minutes + " min " + seconds + " s"}<br />
               </p>
             }
-            secondaryTextLines={1}
+            secondaryTextLines={2}
             leftAvatar={<Avatar icon={<RunningIcon />} backgroundColor={blue500} />}
             initiallyOpen={false}
-            primaryTogglesNestedList={false}
+            primaryTogglesNestedList={true}
             onClick={this.handleClick.bind(this)}
             // onClick={() => Meteor.call('gps.insert', this.props.item.id, this.props.item.mapPoints)}
             nestedItems={[

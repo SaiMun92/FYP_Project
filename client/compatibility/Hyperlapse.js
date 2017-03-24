@@ -134,8 +134,9 @@ var Hyperlapse = function(container, params) {
 		_origin_heading = 0, _origin_pitch = 0,
 		_forward = true,
 		_lookat_heading = 0, _lookat_elevation = 0,
-        _prev_lookat_heading = 0,
-        _prev_o_heading = 0,
+		// changes
+    _prev_lookat_heading = 0,
+    _prev_o_heading = 0,
 		_canvas, _context,
 		_camera, _scene, _renderer, _mesh,
 		_loader, _cancel_load = false,
@@ -220,7 +221,6 @@ var Hyperlapse = function(container, params) {
 
 		if(++_point_index != _h_points.length) {
 			handleLoadProgress( {position:_point_index} );
-
 			if (!_cancel_load) {
 			    _loader.composePanorama(_h_points[_point_index].pano_id);
 			} else {
@@ -456,14 +456,14 @@ var Hyperlapse = function(container, params) {
 		    }
 		    _lookat_heading = google.maps.geometry.spherical.computeHeading(_h_points[_point_index].location, nextPoint.location);
 
-		    console.log("lookat_heading: " + _lookat_heading);
+		    // console.log("lookat_heading: " + _lookat_heading);
 		    if (_prev_lookat_heading != 0) {
 
 		        _lookat_heading = ((_lookat_heading - _prev_lookat_heading) / 2) + _prev_lookat_heading;
 
 		    }
 		    _prev_lookat_heading = _lookat_heading;
-		    console.log("updated lookat_heading: " + _lookat_heading);
+		    // console.log("updated lookat_heading: " + _lookat_heading);
 		}
 
 		if(_h_points[_point_index].elevation != -1 ) {
@@ -477,7 +477,7 @@ var Hyperlapse = function(container, params) {
 		handleFrame({
 			position:_point_index,
 			point: _h_points[_point_index],
-            max: _h_points.length
+      max: _h_points.length
 		});
 	};
 
@@ -503,7 +503,7 @@ var Hyperlapse = function(container, params) {
 			    } */
 			}
 
-			console.log("o_heading:" + o_heading);
+			// console.log("o_heading:" + o_heading);
 
 			_prev_o_heading = o_heading;
 
@@ -753,31 +753,22 @@ var Hyperlapse = function(container, params) {
 			_distance_between_points = p.distance_between_points || _distance_between_points;
 			_max_points = p.max_points || _max_points;
 
-			if (p.request.latLngPoints)
+			if (p.request.individualPoints)
 			{
 			    _raw_points = [];
-			    if (p.request.latLngPoints.length > _max_points)
+			    if (p.request.individualPoints.length > _max_points)
 			    {
-			        var j = p.request.latLngPoints.length / _max_points;
+			        var j = p.request.individualPoints.length / _max_points;
 			        for (var i = 0; i < _max_points; i++) {
-			            _raw_points.push(p.request.latLngPoints[Math.floor(i * j)]);
+			            _raw_points.push(p.request.individualPoints[Math.floor(i * j)]);
 			        }
 			    }
 			    else
 			    {
-			        _raw_points = p.request.latLngPoints;
+			        _raw_points = p.request.individualPoints;
 			    }
 			    parsePoints(p.route);
 			}
-
-            /*
-			if(p.route) {
-				handleDirectionsRoute(p.route);
-			} else {
-				console.log("No route provided.");
-			}
-            */
-
 		}
 
 	};
@@ -826,9 +817,10 @@ var Hyperlapse = function(container, params) {
 		handlePause({});
 	};
 
-    /**
-     * Go to a specific frame (e.g. from slider)
-     */
+	/**
+	 * Go to the specific frame
+	 * @fires Hyperlapse#onFrame
+	 */
 	this.setPosition = function (i) {
 	    self.pause();
 

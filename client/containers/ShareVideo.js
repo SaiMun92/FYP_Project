@@ -7,11 +7,11 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Slider from 'material-ui/Slider';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import VideoController from '../components/videoController';
-
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 let elevation = 0;
-let latLngPoints = [];
+let individualPoints = [];
 let pano = document.getElementById('pano');
 let px, py;
 let onPointerDownPointerX=0, onPointerDownPointerY=0;
@@ -26,13 +26,16 @@ class ShareVideo extends Component {
       playBool: true,
       LoadingBool: true,
       isMoving: false,
-      px: "",
-      py: "",
+      px: null,
+      py: null,
       onPointerDownPointerX: 0,
       onPointerDownPointerY: 0,
       data: [],
       sliderPosition: 0,
       sliderMax: 1,
+      xPosition: null,
+      yPosition: null,
+      open: true,
     };
   }
 
@@ -59,12 +62,13 @@ class ShareVideo extends Component {
       let dy = ( e.clientY - this.state.onPointerDownPointerY ) * f;
       hyperlapse.position.x = this.state.px + dx; // reversed dragging direction (thanks @mrdoob!)
       hyperlapse.position.y = this.state.py + dy;
+      this.setState({ xPosition: hyperlapse.position.x, yPosition: hyperlapse.position.y });
     }
   }
 
   handleMouseUp(e) {
-    hyperlapse.position.x = this.state.px;
-    hyperlapse.position.y = this.state.py;
+    hyperlapse.position.x = this.state.xPosition;
+    hyperlapse.position.y = this.state.yPosition;
 
     this.setState({
       isMoving: false,
@@ -88,12 +92,12 @@ class ShareVideo extends Component {
         // const lng = data.location.longitude/10000000;
 
         // running_cord.push({lat: data[0], lng: data[1] });
-        latLngPoints.push(new google.maps.LatLng(data[0], data[1]));
+        individualPoints.push(new google.maps.LatLng(data[0], data[1]));
       }
     });
 
-    let startPoint = latLngPoints[0];
-    let endPoint = latLngPoints[latLngPoints.length-1];
+    let startPoint = individualPoints[0];
+    let endPoint = individualPoints[individualPoints.length-1];
 
     // calculating the midpoint of the start and end coordinates
     let centrePoint = google.maps.geometry.spherical.interpolate(endPoint, startPoint, 0.5);
@@ -209,7 +213,7 @@ class ShareVideo extends Component {
         // original route
         origin: startPoint,
         destination: endPoint,
-        latLngPoints : latLngPoints,
+        individualPoints : individualPoints,
   			travelMode: google.maps.DirectionsTravelMode.WALKING
   		}
   	};
@@ -386,9 +390,38 @@ class ShareVideo extends Component {
     hyperlapse.position.y -=20;
   }
 
+  handleOpen = () => {
+    // Close button
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    // Submit button
+    this.setState({open: false});
+  };
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Understood"
+        primary={true}
+        onTouchTap={this.handleClose}
+      />,
+    ];
+
     return (
       <div>
+        <MuiThemeProvider>
+          <Dialog
+          title="Control Descriptions"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
+          <img src={'/images/controls.png'} height="200" width="400"/>
+        </Dialog>
+        </MuiThemeProvider>
 	      <div id="video_map" className="map-container"></div>
         <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
         <div>

@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Toggle from 'material-ui/Toggle';
 
 let running_cord = [];
+
+const styles = {
+  toggle: {
+    marginBottom: 16,
+  },
+}
 
 class Maps extends Component {
   constructor(props) {
@@ -19,35 +27,50 @@ class Maps extends Component {
           [{"featureType":"all","elementType":"labels","stylers":[{"visibility":"on"}]},{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"administrative.country","elementType":"labels.text.fill","stylers":[{"color":"#ed5929"}]},{"featureType":"administrative.locality","elementType":"labels.text.fill","stylers":[{"color":"#c4c4c4"}]},{"featureType":"administrative.neighborhood","elementType":"labels.text.fill","stylers":[{"color":"#2aacff"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21},{"visibility":"on"}]},{"featureType":"poi.business","elementType":"geometry","stylers":[{"visibility":"on"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#2aacff"},{"lightness":"0"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.highway","elementType":"labels.text.stroke","stylers":[{"color":"#2aacff"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#575757"}]},{"featureType":"road.arterial","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"road.arterial","elementType":"labels.text.stroke","stylers":[{"color":"#2c2c2c"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"road.local","elementType":"labels.text.fill","stylers":[{"color":"#999999"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]}],
           {name: 'Dark'});
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: {lat: position.coords.latitude, lng: position.coords.longitude},
-          // Current Location of user
-          mapTypeControlOptions: {
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                    'Paper', 'Dark']
-          }
-        });
 
-        map.mapTypes.set('Paper', Paper);
-        map.mapTypes.set('Dark', Dark_Style);
-        // map.setMapTypeId('styled_map');
+    const map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: {lat: 1.352083, lng: 103.819836},
+      // Current Location of user
+      mapTypeControlOptions: {
+        mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                'Paper', 'Dark']
+      },
+    });
 
+    map.mapTypes.set('Paper', Paper);
+    map.mapTypes.set('Dark', Dark_Style);
 
-        let infoWindow = new google.maps.InfoWindow({map: map});
-
-        let pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        infoWindow.setPosition(pos);
-        infoWindow.setContent('Your Current Location!');
-      });
-    } else {
-      alert('Geo Location feature is not supported in this browser.');
-    }
+          // use geolocation if u have a domain name
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     const map = new google.maps.Map(document.getElementById('map'), {
+    //       zoom: 16,
+    //       center: {lat: position.coords.latitude, lng: position.coords.longitude},
+    //       // Current Location of user
+    //       mapTypeControlOptions: {
+    //         mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+    //                 'Paper', 'Dark']
+    //       }
+    //     });
+    //
+    //     map.mapTypes.set('Paper', Paper);
+    //     map.mapTypes.set('Dark', Dark_Style);
+    //     // map.setMapTypeId('styled_map');
+    //
+    //
+    //     let infoWindow = new google.maps.InfoWindow({map: map});
+    //
+    //     let pos = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     };
+    //     infoWindow.setPosition(pos);
+    //     infoWindow.setContent('Your Current Location!');
+    //   });
+    // } else {
+    //   alert('Geo Location feature is not supported in this browser.');
+    // }
   }
 
   componentDidUpdate() {
@@ -92,6 +115,8 @@ class Maps extends Component {
 
     map.mapTypes.set('Paper', Paper);
     map.mapTypes.set('Dark', Dark_Style);
+    // google street view highlighting on map
+    // let svLayer = new google.maps.StreetViewCoverageLayer();
 
     const startPointMarker = new google.maps.Marker({
       position: startPoint,
@@ -122,6 +147,11 @@ class Maps extends Component {
     });
     flightPath.setMap(map);
     running_cord = [];
+  }
+
+  setStreetView() {
+    // svLayer.setMap(map);
+    console.log("toggle me!");
   }
 
   render() {
