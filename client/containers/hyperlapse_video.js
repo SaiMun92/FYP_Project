@@ -16,6 +16,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
 
 let elevation = 0;
 let individualPoints = [];
@@ -43,6 +44,7 @@ class Video extends Component {
       xPosition: null,
       yPosition: null,
       open: true,
+      mapImage: true,
     };
   }
 
@@ -395,6 +397,23 @@ class Video extends Component {
     this.setState({open: false});
   };
 
+  handleMap = () => {
+    this.setState({ mapImage: !this.state.mapImage });
+  }
+
+  loadingMap() {
+    if (this.state.mapImage == true) {
+      return (
+        <div id="video_map"></div>
+      );
+    }
+    else {
+      return (
+        <div></div>
+      );
+    }
+  }
+
 
   render() {
     const actions = [
@@ -407,32 +426,40 @@ class Video extends Component {
 
     return (
       <div>
-        <MuiThemeProvider>
-          <Dialog
-          title="Control Descriptions"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <img src={'/images/controls.png'} height="200" width="400"/>
-        </Dialog>
-        </MuiThemeProvider>
-        <MuiThemeProvider>
-          <AppBar title='Video'
-            iconElementLeft={<IconButton><ReturnButton /></IconButton>}
-            onLeftIconButtonTouchTap={this.handleClick.bind(this)}
-            style={{backgroundColor: '#607D8B',}}
-          />
-        </MuiThemeProvider>
-	      <div id="video_map"></div>
-        <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
-        {/* <div id="controller">
-          <VideoController Progress={this.state.Progress} Length={this.state.Length}
-            Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
-        </div> */}
         <div>
-          {this.loadingScreen()}
+          {this.loadingMap()}
+        </div>
+        <div>
+          <MuiThemeProvider>
+            <Dialog
+            title="Control Descriptions"
+            actions={actions}
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.handleClose}
+          >
+            <img src={'/images/controls.png'} height="200" width="400"/>
+          </Dialog>
+          </MuiThemeProvider>
+          <MuiThemeProvider>
+            <AppBar title='Video'
+              iconElementLeft={<IconButton><ReturnButton /></IconButton>}
+              onLeftIconButtonTouchTap={this.handleClick.bind(this)}
+              iconElementRight={<Toggle label="Hide Map" onToggle={this.handleMap.bind(this)}/>}
+              style={{backgroundColor: '#607D8B',}}
+            />
+          </MuiThemeProvider>
+  	      {/* <div id="video_map"></div> */}
+          <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
+          {/* <div id="controller">
+            <VideoController Progress={this.state.Progress} Length={this.state.Length}
+              Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
+          </div> */}
+          <MuiThemeProvider>
+            <div>
+              {this.loadingScreen()}
+            </div>
+          </MuiThemeProvider>
         </div>
       </div>
     );
