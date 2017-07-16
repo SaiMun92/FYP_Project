@@ -10,4 +10,4 @@ This project is built entirely on Meteor and React.
 
 ## Screenshots of the web application
 * **Home Page**
-![Home Page](/./home.png)
+![Home Page](/./screenshots/home.png)
