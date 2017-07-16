@@ -9,5 +9,14 @@ This project is built entirely on Meteor and React.
 3. Keep track on the routes and distances you ran by displaying them onto Google Maps
 
 ## Screenshots of the web application
-* **Home Page**
+* **Home Page** Users can login into their Strava account to sync data with the web application
 ![Home Page](/./screenshots/home.png)
+
+* **Main Page** This is where user can view the routes they have taken
+![Main Page](/./screenshots/main.png)
+![Map Page](/./screenshots/map.png)
+
+* **Video Page** This page allows users to view the video in 3D.
+![Video1](/./screenshots/video1.png)
+![Video2](/./screenshots/video2.png)
+![Video3](/./screenshots/video3.png)
