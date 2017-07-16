@@ -17,6 +17,4 @@ This project is built entirely on Meteor and React.
 ![Map Page](/./screenshots/map.png)
 
 * **Video Page** This page allows users to view the video in 3D.
-![Video1](/./screenshots/video1.png)
-![Video2](/./screenshots/video2.png)
-![Video3](/./screenshots/video3.png)
+![Video1](/./screenshots/video.png)
