@@ -76,7 +76,6 @@ class Video extends Component {
   }
 
   handleMouseUp(e) {
-    // this is not updating to the hyperlapse
     hyperlapse.position.x = this.state.xPosition;
     hyperlapse.position.y = this.state.yPosition;
 
@@ -449,12 +448,7 @@ class Video extends Component {
               style={{backgroundColor: '#607D8B',}}
             />
           </MuiThemeProvider>
-  	      {/* <div id="video_map"></div> */}
           <div id="pano" className="video-container" onMouseDown={this.handleMouseDown.bind(this)} onMouseUp={this.handleMouseUp.bind(this)} onMouseMove={this.handleMouseMove.bind(this)} ></div>
-          {/* <div id="controller">
-            <VideoController Progress={this.state.Progress} Length={this.state.Length}
-              Value={this.state.Value} LoadingBool={this.state.LoadingBool} />
-          </div> */}
           <MuiThemeProvider>
             <div>
               {this.loadingScreen()}

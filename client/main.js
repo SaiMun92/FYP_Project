@@ -90,9 +90,6 @@ class Main extends Component {
   }
 
   render() {
-    // console.log(user_data);
-    // console.log(this.state.user_data);
-    // console.log(this.state.user_activities);
     return (
       <div>
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
